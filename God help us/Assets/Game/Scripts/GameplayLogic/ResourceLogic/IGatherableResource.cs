@@ -6,7 +6,6 @@ namespace Game.Scripts.GameplayLogic.ResourceLogic
     {
         public Vector3 GetPosition();
         public bool IsActive();
-
         void ExtractResource();
     }
 }

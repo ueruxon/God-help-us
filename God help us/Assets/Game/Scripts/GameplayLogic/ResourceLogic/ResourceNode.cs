@@ -10,7 +10,7 @@ namespace Game.Scripts.GameplayLogic.ResourceLogic
 {
     public class ResourceNode : MonoBehaviour, IGatherableResource
     {
-        public event Action Destroyed;
+        public event Action<ResourceType, Vector3> Destroyed;
         
         [SerializeField] private List<Transform> _visualVariants;
 
@@ -72,7 +72,7 @@ namespace Game.Scripts.GameplayLogic.ResourceLogic
             //_nodeState = ResourceNodeState.WorkedOut;
             //_workIndicator.Hide();
             
-            Destroyed?.Invoke();
+            Destroyed?.Invoke(_config.Type, transform.position);
         }
     }
 }

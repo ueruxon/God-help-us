@@ -6,10 +6,13 @@
         public const string UILoadingCurtain = "UI/LoadingCurtain";
         
         // Actors
-        public const string ActorsDataPath = "Data/Actors";
+        public const string ActorsDataPath = "Configs/Actors";
         
         // Resources
-        public const string ResourceNodePointsConfigPath = "Data/ResourceConfigs/ResourceNodesOnLevel";
-        public const string ResourceNodesPath = "Data/ResourceConfigs";
+        public const string ResourceNodePointsConfigPath = "Configs/ResourceConfigs/ResourceNodesOnLevel";
+        public const string ResourceConfigsPath = "Configs/ResourceConfigs";
+        
+        // Buildings
+        public const string StorageConfigsPath = "Configs/Buildings/Storages";
     }
 }

@@ -3,8 +3,9 @@
     public enum ActionType
     {
         Idle,
-        MoveToTarget,
-        Job,
+        Mining,
+        Collect,
+        Delivery,
         Attack,
     }
 }

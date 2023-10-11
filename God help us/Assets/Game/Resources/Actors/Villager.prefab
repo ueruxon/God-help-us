@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 5420517589143762456}
   - component: {fileID: 231704470728195656}
   - component: {fileID: 1813448360179378769}
-  - component: {fileID: 3496288797916895805}
+  - component: {fileID: 1786962136976728848}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -237,6 +237,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4705100705054127908}
+  - {fileID: 4672764186548306917}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1410196515520343254
@@ -306,6 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4892e34899b64a03971e50436b417c9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _backpackContainer: {fileID: 4672764186548306917}
 --- !u!114 &1813448360179378769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,7 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 3927089728636759402}
---- !u!114 &3496288797916895805
+--- !u!114 &1786962136976728848
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -328,7 +330,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2022729341263168036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 928b7629de134a27aea59e6695c6dd64, type: 3}
+  m_Script: {fileID: 11500000, guid: 040ad9c94d6f42cbab425514bd5a400c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &4714794605876285732
@@ -560,4 +562,35 @@ Transform:
   m_Children:
   - {fileID: 2649608444362632079}
   m_Father: {fileID: 4705100705054127908}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7835619730262995036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4672764186548306917}
+  m_Layer: 0
+  m_Name: Backpack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4672764186548306917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7835619730262995036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 663869756290664382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

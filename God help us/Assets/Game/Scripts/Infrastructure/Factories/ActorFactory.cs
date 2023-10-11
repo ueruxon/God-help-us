@@ -1,14 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Game.Scripts.Data.Actors;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI;
-using Game.Scripts.GameplayLogic.AI.Actions;
 using Game.Scripts.GameplayLogic.AI.UtilityAI;
 using Game.Scripts.GameplayLogic.JobManagement;
-using Game.Scripts.GameplayLogic.Services.ActorRegistry;
+using Game.Scripts.GameplayLogic.Services;
 using Game.Scripts.Infrastructure.Services.AssetManagement;
 using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Game.Scripts.Infrastructure.Factories
 {
@@ -16,17 +17,21 @@ namespace Game.Scripts.Infrastructure.Factories
     {
         private readonly IConfigProvider _configProvider;
         private readonly IAssetProvider _assetProvider;
-        private readonly IActorRegistry _actorRegistry;
-        private readonly JobSequencer _jobSequencer;
+        private readonly ActorRegistry _actorRegistry;
+        private readonly BuildingRegistry _buildingRegistry;
+        private readonly JobController _jobController;
 
-        public ActorFactory(IConfigProvider configProvider, IAssetProvider assetProvider, 
-            IActorRegistry actorRegistry,
-            JobSequencer jobSequencer)
+        public ActorFactory(IConfigProvider configProvider, 
+            IAssetProvider assetProvider, 
+            ActorRegistry actorRegistry,
+            BuildingRegistry buildingRegistry,
+            JobController jobController)
         {
             _configProvider = configProvider;
             _assetProvider = assetProvider;
             _actorRegistry = actorRegistry;
-            _jobSequencer = jobSequencer;
+            _buildingRegistry = buildingRegistry;
+            _jobController = jobController;
         }
         
         public T CreateActor<T>(ActorType actorType, Vector3 at) where T : Actor
@@ -43,13 +48,16 @@ namespace Game.Scripts.Infrastructure.Factories
                 Type = config.Type
             };
 
+            string id = Guid.NewGuid().ToString();
+
             foreach (AIAction action in config.AIConfig.Actions) 
                 actorData.Actions.Add(Object.Instantiate(action));
 
             actor.Construct(actorData);
-            agent.Construct(actorData, brains, _jobSequencer);
+            actor.name = $"Actor {id}";
+            agent.Construct(id, actorData, brains, _jobController, _buildingRegistry);
             
-            _actorRegistry.Register(actor);
+            _actorRegistry.Register(id, actor);
 
             return actor as T;
         }

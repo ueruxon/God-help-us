@@ -2,6 +2,9 @@
 {
     public enum JobCategory
     {
-        Mining = 1
+        Farm = 1,
+        Collect = 2,
+        Mining = 3,
+        Construct = 4
     }
 }

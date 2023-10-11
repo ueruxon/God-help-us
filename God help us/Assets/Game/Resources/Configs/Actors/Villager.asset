@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0be238b768654b8d92ad258c7c571437, type: 3}
+  m_Name: Villager
+  m_EditorClassIdentifier: 
+  Type: 0
+  Prefab: {fileID: 1786962136976728848, guid: 66307c9d73b78b8439c0e84c0c268027, type: 3}
+  AIConfig:
+    DefaultAction: {fileID: 11400000, guid: 89eb099e424a90f43b38d3bd9667e928, type: 2}
+    Actions:
+    - {fileID: 11400000, guid: 89eb099e424a90f43b38d3bd9667e928, type: 2}
+    - {fileID: 11400000, guid: 2b75af1f66deba34685ae6a5037e4a5a, type: 2}
+    - {fileID: 11400000, guid: 2d10375f90de30949b47cec190548c04, type: 2}
+    - {fileID: 11400000, guid: 5c48bf6110d7d6e4da1eb59ab65a8699, type: 2}

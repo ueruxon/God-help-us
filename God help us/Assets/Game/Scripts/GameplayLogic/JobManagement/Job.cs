@@ -1,13 +1,11 @@
 ﻿using System;
 using Game.Scripts.Common.DataStructures.Heap;
-using Game.Scripts.GameplayLogic.AI;
+using Game.Scripts.GameplayLogic.ResourceLogic;
 
 namespace Game.Scripts.GameplayLogic.JobManagement
 {
-    public abstract class Job : IPriorityItem
+    public class Job : IPriorityItem
     {
-        public event Action<Status> StatusChanged;
-        
         public enum Status
         {
             None,
@@ -17,31 +15,28 @@ namespace Game.Scripts.GameplayLogic.JobManagement
             Canceled
         }
         
-        public int Priority
-        {
-            get;
-            set;
-        }
+        public event Action<Status> StatusChanged;
+
+        private readonly JobCategory _category;
+        private readonly int _priority;
+        private readonly JobData _data;
+
+        public int Priority => _priority;
+        public JobCategory Category => _category;
+        public JobData JobData => _data;
+
         public float Offset { get; set; }
         public bool Enqueued { get; set; }
-
+        
         private Status _status;
 
-        public virtual void Enter(AIContext context)
+        public Job(JobCategory jobCategory, int priority, JobData data)
         {
-            
+            _category = jobCategory;
+            _priority = priority;
+            _data = data;
         }
-
-        public virtual void Update(AIContext context)
-        {
-            
-        }
-
-        public virtual void Exit(AIContext context)
-        {
-            
-        }
-
+        
         public void ChangeStatus(Status newStatus)
         {
             if (_status != newStatus)
@@ -50,5 +45,11 @@ namespace Game.Scripts.GameplayLogic.JobManagement
                 StatusChanged?.Invoke(_status);
             }
         }
+    }
+
+    public struct JobData
+    {
+        public IGatherableResource Node;
+        public Resource Resource;
     }
 }

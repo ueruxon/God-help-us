@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Scripts.GameplayLogic.JobManagement;
+using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI
 {
@@ -11,20 +12,26 @@ namespace Game.Scripts.GameplayLogic.AI
     
     public class JobPlanner
     {
-        private readonly JobSequencer _jobSequencer;
+        private readonly JobController _jobController;
         private readonly AIAgent _agent;
 
         private Job _currentJob;
         private AIState _aiState;
 
-        public JobPlanner(JobSequencer jobSequencer, AIAgent agent)
+        public JobPlanner(JobController jobController, AIAgent agent)
         {
-            _jobSequencer = jobSequencer;
+            _jobController = jobController;
             _agent = agent;
         }
 
         public void Init() => 
             Release();
+
+        public bool HasJob() =>
+            _aiState == AIState.InWork;
+
+        public Job GetJob() => 
+            _currentJob;
 
         private async UniTaskVoid CheckAvailableJob()
         {
@@ -32,7 +39,7 @@ namespace Game.Scripts.GameplayLogic.AI
             
             while (_aiState == AIState.Idle)
             {
-                if (_jobSequencer.HasAnyJob()) 
+                if (_jobController.HasAnyJob()) 
                     ReceiveJob();
 
                 await UniTask.Delay(500);
@@ -41,27 +48,21 @@ namespace Game.Scripts.GameplayLogic.AI
 
         private void ReceiveJob()
         {
-            _currentJob = _jobSequencer.GetPriorityJob();
+            _currentJob = _jobController.GetPriorityJob(_agent.WorkerId);
             _currentJob.StatusChanged += OnJobStatusChanged;
-            
+
             _aiState = AIState.InWork;
         }
-
-        public bool HasJob() =>
-            _aiState == AIState.InWork;
-
-        public Job GetJob() => 
-            _currentJob;
 
         private void OnJobStatusChanged(Job.Status status)
         {
             switch (status)
             {
                 case Job.Status.Completed:
-                    _jobSequencer.CompleteJob(_currentJob);
+                    _jobController.CompleteJob(_currentJob);
                     break;
                 case Job.Status.Canceled:
-                    _jobSequencer.CanceledJob(_currentJob);
+                    _jobController.CanceledJob(_currentJob);
                     break;
             }
 

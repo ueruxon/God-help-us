@@ -6,20 +6,20 @@ using UnityEngine;
 namespace Game.Scripts.GameplayLogic.Actors
 {
     [RequireComponent(typeof(AIAgent))]
-    public abstract class Actor : MonoBehaviour
+    public class Actor : MonoBehaviour
     {
-        protected AIAgent AiAgent;
-        protected ActorData Data;
+        private AIAgent _aiAgent;
+        private ActorData _data;
         
         public void Construct(ActorData data)
         {
-            Data = data;
-            AiAgent = GetComponent<AIAgent>();
+            _data = data;
+            _aiAgent = GetComponent<AIAgent>();
         }
 
-        public virtual void Init()
+        public void Init()
         {
-            AiAgent.Init();
+            _aiAgent.Init();
         }
     }
     

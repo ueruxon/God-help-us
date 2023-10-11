@@ -39,11 +39,9 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
             _convolutions = new Convolutions()
             {
                 {When.IsDontMove, GetInput.IsTrue, ScoreCalculator.AsIs, ActionType.Idle, "Idle"},
-                {When.HasJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+100), ActionType.Job, "Job"}
-                //{When.MoveToTarget, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+5), ActionType.MoveToTarget, "MoveTo"},
-                //{When.IsDontMove, GetInput.IsFalse, ScoreCalculator.AsIs, ActionType.Idle, "Idle 2"},
-                //{When.ResourceNodeIsNear, GetInput.InventoryEmpty, ScoreCalculator.ScaleBy(+10), "Mining"},
-                //{When.MoveToTarget, GetInput.InventoryEmpty, ScoreCalculator.ScaleBy(+10), "Mining"},
+                {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Mining, "Mining"},
+                {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Collect, "Collect Item"},
+                {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), ActionType.Delivery, "Delivery"},
             };
         }
     }
