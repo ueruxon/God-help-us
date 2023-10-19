@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using Game.Scripts.Common.DataStructures.PriorityQueue;
 using Game.Scripts.GameplayLogic.Actors;
-using Game.Scripts.GameplayLogic.Services;
+using Game.Scripts.GameplayLogic.Registers;
 
 namespace Game.Scripts.GameplayLogic.JobManagement
 {

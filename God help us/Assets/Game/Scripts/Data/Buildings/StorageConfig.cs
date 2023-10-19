@@ -10,5 +10,7 @@ namespace Game.Scripts.Data.Buildings
         public Storage Prefab;
         public Transform FillerPrefab;
         public ResourceType StoredType;
+        
+        public BuildingConfig BuildingConfig;
     }
 }

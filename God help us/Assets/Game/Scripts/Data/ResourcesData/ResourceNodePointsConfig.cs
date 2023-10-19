@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Scripts.GameplayLogic.ResourceLogic;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 using Sirenix.OdinInspector;
 using UnityEngine;
 

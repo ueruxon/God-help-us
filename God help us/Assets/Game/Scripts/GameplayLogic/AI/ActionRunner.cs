@@ -33,7 +33,7 @@ namespace Game.Scripts.GameplayLogic.AI
         public void Tick() => 
             _currentAction.OnUpdate(_context);
 
-        private void OnActionStatusChanged(AIAction.ActionStatus status) => 
+        private void OnActionStatusChanged(AIAction.ActionStatus status, AIAction action) => 
             ActionStatusChanged?.Invoke(status);
     }
 }

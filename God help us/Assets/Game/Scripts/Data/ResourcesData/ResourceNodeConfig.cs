@@ -1,4 +1,4 @@
-﻿using Game.Scripts.GameplayLogic.ResourceLogic;
+﻿using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
 namespace Game.Scripts.Data.ResourcesData

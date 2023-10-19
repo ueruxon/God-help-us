@@ -1,4 +1,4 @@
-﻿using Game.Scripts.GameplayLogic.ResourceLogic;
+﻿using Game.Scripts.GameplayLogic.ResourceManagement;
 
 namespace Game.Scripts.GameplayLogic.JobManagement
 {

@@ -1,4 +1,4 @@
-﻿using Game.Scripts.GameplayLogic.ResourceLogic;
+﻿using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.Actors
@@ -26,8 +26,8 @@ namespace Game.Scripts.GameplayLogic.Actors
 
         public void Drop()
         {
+            //Object.Destroy(_item.gameObject);
             //_item.transform.SetParent(null);
-            Object.Destroy(_item.gameObject);
             _item = null;
         }
 

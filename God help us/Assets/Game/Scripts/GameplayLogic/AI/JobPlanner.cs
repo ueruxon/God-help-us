@@ -7,7 +7,8 @@ namespace Game.Scripts.GameplayLogic.AI
     public enum AIState
     {
         Idle,
-        InWork
+        InWork,
+        Freelance
     }
     
     public class JobPlanner
@@ -33,9 +34,17 @@ namespace Game.Scripts.GameplayLogic.AI
         public Job GetJob() => 
             _currentJob;
 
+        public void Freelance(bool active)
+        {
+            if (active)
+                _aiState = AIState.Freelance;
+            else
+                Release();
+        }
+
         private async UniTaskVoid CheckAvailableJob()
         {
-            await UniTask.Delay(500);
+            await UniTask.Delay(100);
             
             while (_aiState == AIState.Idle)
             {

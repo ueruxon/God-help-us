@@ -1,11 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Game.Scripts.Data.ResourcesData;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI.Systems.Movement;
 using Game.Scripts.GameplayLogic.Buildings;
-using Game.Scripts.GameplayLogic.ResourceLogic;
-using Game.Scripts.GameplayLogic.Services;
+using Game.Scripts.GameplayLogic.Registers;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 
 namespace Game.Scripts.GameplayLogic.AI
 {
@@ -16,17 +14,21 @@ namespace Game.Scripts.GameplayLogic.AI
         public JobPlanner JobPlanner { get; }
         public IMovementSystem MovementSystem { get; }
         public ActorAnimator Animator { get; }
-        
-        public AIContext(JobPlanner jobPlanner, IMovementSystem movementSystem,
+        public string ActorId { get; }
+
+        public AIContext(string actorId,
+            JobPlanner jobPlanner, 
+            IMovementSystem movementSystem,
             ActorAnimator animator,
             Backpack backpack, 
             BuildingRegistry buildingRegistry)
         {
-            _buildingRegistry = buildingRegistry;
+            ActorId = actorId;
             Backpack = backpack;
             JobPlanner = jobPlanner;
             Animator = animator;
             MovementSystem = movementSystem;
+            _buildingRegistry = buildingRegistry;
         }
 
         public Storage GetStorageForResource(Resource resource)
@@ -35,11 +37,20 @@ namespace Game.Scripts.GameplayLogic.AI
 
             foreach (Storage storage in storages)
             {
-                if (storage.ContainsResource(resource.Id))
+                if (storage.ContainsResource(resource))
                     return storage;
             }
             
             throw new KeyNotFoundException($"No found storage for resource {resource.Id}");
         }
+
+        public bool ThereIsAnyAvailableProductionBuilding() => 
+            _buildingRegistry.CheckAnyAvailableProductionBuilding();
+
+        public ProductionBuilding GetAvailableProductionBuilding() => 
+            _buildingRegistry.GetAnyProductionBuilding();
+
+        public ProductionBuilding GetRequestedBuilding() => 
+            _buildingRegistry.GetRequesterBuilding(ActorId);
     }
 }

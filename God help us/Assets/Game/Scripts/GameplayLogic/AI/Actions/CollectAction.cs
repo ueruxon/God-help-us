@@ -1,5 +1,5 @@
 ﻿using Game.Scripts.GameplayLogic.JobManagement;
-using Game.Scripts.GameplayLogic.ResourceLogic;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI.Actions

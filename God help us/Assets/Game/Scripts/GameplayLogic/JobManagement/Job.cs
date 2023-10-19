@@ -1,6 +1,7 @@
 ﻿using System;
 using Game.Scripts.Common.DataStructures.Heap;
-using Game.Scripts.GameplayLogic.ResourceLogic;
+using Game.Scripts.GameplayLogic.ResourceManagement;
+using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.JobManagement
 {

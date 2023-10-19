@@ -1,7 +1,7 @@
 ﻿using Game.Scripts.Data.ResourcesData;
 using UnityEngine;
 
-namespace Game.Scripts.GameplayLogic.ResourceLogic
+namespace Game.Scripts.GameplayLogic.ResourceManagement
 {
     public class Resource : MonoBehaviour
     {

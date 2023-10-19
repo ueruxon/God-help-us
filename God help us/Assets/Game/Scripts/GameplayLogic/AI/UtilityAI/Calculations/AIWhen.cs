@@ -1,10 +1,17 @@
 ﻿using Game.Scripts.GameplayLogic.JobManagement;
-using UnityEngine;
+using Game.Scripts.GameplayLogic.Registers;
 
 namespace Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations
 {
     public class AIWhen
     {
+        private readonly BuildingRegistry _buildingRegistry;
+
+        public AIWhen(BuildingRegistry buildingRegistry)
+        {
+            _buildingRegistry = buildingRegistry;
+        }
+
         public bool IsDontMove(AIContext context)
         {
             return context.MovementSystem.ReachedDestination();
@@ -45,5 +52,11 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations
 
             return false;
         }
+
+        public bool AnyAvailableJob(AIContext context) => 
+            _buildingRegistry.CheckAnyAvailableProductionBuilding();
+
+        public bool IsWorkerFreelancer(AIContext context) => 
+            _buildingRegistry.WorkerContains(context.ActorId);
     }
 }

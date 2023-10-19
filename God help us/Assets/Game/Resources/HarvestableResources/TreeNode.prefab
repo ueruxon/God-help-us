@@ -77,7 +77,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7044556688403201450}
@@ -150,11 +150,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreeVisual_03
       objectReference: {fileID: 0}
-    - target: {fileID: 3792162566864581372, guid: f2fcd7a7259072146b5798c2438fb0c1,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -178,11 +173,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TreeVisual_02
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729852314596612975, guid: f536eec360a5f8f44a77ba30f6fd60c7,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9102701920594572919, guid: f536eec360a5f8f44a77ba30f6fd60c7,
         type: 3}
@@ -258,11 +248,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: TreeVisual_05
       objectReference: {fileID: 0}
-    - target: {fileID: 7732594590739360190, guid: 7b56236225ff34c43bc1f401c334ded5,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8046941496689245776, guid: 7b56236225ff34c43bc1f401c334ded5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -336,11 +321,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TreeVisual_01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3819069063007935997, guid: 64fe06c0ca948bd4db39f7de18a76d9a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6853294390969739399, guid: 64fe06c0ca948bd4db39f7de18a76d9a,
         type: 3}
@@ -465,11 +445,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TreeVisual_04
-      objectReference: {fileID: 0}
-    - target: {fileID: 7765201951887997331, guid: 210b742dacf0abf4eb5bac3af0c9fcbb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

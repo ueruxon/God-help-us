@@ -12,5 +12,6 @@ namespace Game.Scripts.Infrastructure.Services.Config
         public ResourceConfig GetDataForResource(ResourceType type);
         public ResourceNodePointsConfig GetResourcesNodeConfigOnLevel();
         public StorageConfig GetConfigForStorage(ResourceType type);
+        public ProductionBuildingConfig GetConfigForProductionBuilding(ProductionCategory category);
     }
 }

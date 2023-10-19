@@ -14,5 +14,6 @@
         
         // Buildings
         public const string StorageConfigsPath = "Configs/Buildings/Storages";
+        public const string ProductionBuildingConfigsPath = "Configs/Buildings/Productions";
     }
 }

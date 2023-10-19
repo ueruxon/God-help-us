@@ -18,6 +18,7 @@ namespace Game.Scripts.Infrastructure.Services.Config
         private Dictionary<ResourceType, ResourceConfig> _resourceDataByType;
 
         private Dictionary<ResourceType, StorageConfig> _storageDataByType;
+        private Dictionary<ProductionCategory, ProductionBuildingConfig> _productionDataByType;
 
         public ConfigProvider(IAssetProvider assetProvider)
         {
@@ -41,6 +42,10 @@ namespace Game.Scripts.Infrastructure.Services.Config
             _storageDataByType = _assetProvider
                 .LoadAll<StorageConfig>(AssetPath.StorageConfigsPath)
                 .ToDictionary(x => x.StoredType, x => x);
+
+            _productionDataByType = _assetProvider
+                .LoadAll<ProductionBuildingConfig>(AssetPath.ProductionBuildingConfigsPath)
+                .ToDictionary(x => x.Category, x => x);
         }
 
         public ActorConfig GetDataForActor(ActorType type)
@@ -81,6 +86,14 @@ namespace Game.Scripts.Infrastructure.Services.Config
                 return data;
             
             throw new KeyNotFoundException($"No config found for {type}");
+        }
+
+        public ProductionBuildingConfig GetConfigForProductionBuilding(ProductionCategory category)
+        {
+            if (_productionDataByType.TryGetValue(category, out ProductionBuildingConfig data))
+                return data;
+            
+            throw new KeyNotFoundException($"No config found for {category}");
         }
     }
     

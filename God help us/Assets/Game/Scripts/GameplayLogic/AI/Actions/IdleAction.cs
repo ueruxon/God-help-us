@@ -7,8 +7,9 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
     {
         public override void OnEnter(AIContext context)
         {
-            Debug.Log("Enter on Idle");
             base.OnEnter(context);
+            Debug.Log("Enter on Idle");
+            context.MovementSystem.Stop();
         }
 
         public override void OnExit(AIContext context)

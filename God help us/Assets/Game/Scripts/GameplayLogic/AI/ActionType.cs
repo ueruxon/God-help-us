@@ -6,6 +6,8 @@
         Mining,
         Collect,
         Delivery,
-        Attack,
+        JobRequested,
+        Freelance,
+        Attack
     }
 }

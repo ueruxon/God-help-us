@@ -26,8 +26,12 @@ namespace Game.Scripts.GameplayLogic.Actors
         public void PlayWalking(bool isWalking) => 
             _animator.SetBool(AnimatorParamKey.Walking, isWalking);
 
-        public void PlayHit() => 
-            _animator.SetTrigger(AnimatorParamKey.Hit);
+        public void PlayHit()
+        {
+            _animator.CrossFade(AnimatorParamKey.Hit, 0.05f);
+            //_animator.SetTrigger(AnimatorParamKey.Hit);
+        }
+
 
         public void EnteredState(int stateHash)
         {

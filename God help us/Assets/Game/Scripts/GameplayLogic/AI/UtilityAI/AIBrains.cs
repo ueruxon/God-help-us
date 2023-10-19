@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Game.Scripts.Data.Actors;
 using Game.Scripts.GameplayLogic.Actors;
-using Game.Scripts.GameplayLogic.AI.Actions;
 using Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations;
+using Game.Scripts.GameplayLogic.Registers;
 
 namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 {
@@ -16,9 +15,9 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 
         private Convolutions _convolutions;
 
-        public AIBrains()
+        public AIBrains(BuildingRegistry buildingRegistry)
         {
-            When = new AIWhen();
+            When = new AIWhen(buildingRegistry);
             GetInput = new AIGetInput();
             ScoreCalculator = new AIScoreCalculator();
 
@@ -39,9 +38,11 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
             _convolutions = new Convolutions()
             {
                 {When.IsDontMove, GetInput.IsTrue, ScoreCalculator.AsIs, ActionType.Idle, "Idle"},
-                {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Mining, "Mining"},
-                {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Collect, "Collect Item"},
+                {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Mining, "Mining"},
+                {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Collect, "Collect Item"},
                 {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), ActionType.Delivery, "Delivery"},
+                {When.AnyAvailableJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+10), ActionType.JobRequested, "Job Requested"},
+                {When.IsWorkerFreelancer, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Freelance, "Freelance"},
             };
         }
     }

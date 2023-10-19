@@ -1,9 +1,10 @@
 ﻿using System;
 using Game.Scripts.GameplayLogic.Actors;
+using Game.Scripts.GameplayLogic.AI.Reporting;
 using Game.Scripts.GameplayLogic.AI.Systems.Movement;
 using Game.Scripts.GameplayLogic.AI.UtilityAI;
 using Game.Scripts.GameplayLogic.JobManagement;
-using Game.Scripts.GameplayLogic.Services;
+using Game.Scripts.GameplayLogic.Registers;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI
@@ -23,6 +24,7 @@ namespace Game.Scripts.GameplayLogic.AI
         private DecisionMaker _decisionMaker;
         private ActionRunner _actionRunner;
         private JobPlanner _jobPlanner;
+        private AIReporter _aiReporter;
 
         private IMovementSystem _movementSystem;
         private ActorAnimator _actorAnimator;
@@ -35,19 +37,20 @@ namespace Game.Scripts.GameplayLogic.AI
             ActorData data, 
             AIBrains aiBrains, 
             JobController jobController,
-            BuildingRegistry buildingRegistry)
+            BuildingRegistry buildingRegistry,
+            AIReporter reporter)
         {
             _id = id;
             _brains = aiBrains;
-
             
             _jobPlanner = new JobPlanner(jobController, this);
             _movementSystem = GetComponent<AISimpleMover>();
             _actorAnimator = GetComponent<ActorAnimator>();
             _backpack = new Backpack(transform, _backpackContainer);
-                
-            _aiContext = new AIContext(_jobPlanner, _movementSystem, _actorAnimator, _backpack, buildingRegistry);
-            _decisionMaker = new DecisionMaker(_aiContext, _brains, data);
+
+            _aiReporter = reporter;
+            _aiContext = new AIContext(_id, _jobPlanner, _movementSystem, _actorAnimator, _backpack, buildingRegistry);
+            _decisionMaker = new DecisionMaker(_aiContext, _brains, data, _aiReporter);
             _actionRunner = new ActionRunner(_aiContext);
             _actionRunner.ActionStatusChanged += DecideActionImmediately;
         }

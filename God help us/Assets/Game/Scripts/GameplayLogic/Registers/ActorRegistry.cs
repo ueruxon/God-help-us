@@ -2,17 +2,19 @@
 using Game.Scripts.GameplayLogic.Actors;
 using UnityEngine;
 
-namespace Game.Scripts.GameplayLogic.Services
+namespace Game.Scripts.GameplayLogic.Registers
 {
     public class ActorRegistry
     {
         private readonly List<Actor> _allActors;
+        private readonly List<string> _allActorsIds;
         private readonly Dictionary<string, Actor> _allActorById;
 
         public ActorRegistry()
         {
             _allActors = new List<Actor>();
             _allActorById = new Dictionary<string, Actor>();
+            _allActorsIds = new List<string>();
         }
 
         public void Register(string actorId, Actor actor)
@@ -20,6 +22,7 @@ namespace Game.Scripts.GameplayLogic.Services
             if (_allActors.Contains(actor) == false) 
                 _allActors.Add(actor);
 
+            _allActorsIds.Add(actorId);
             _allActorById[actorId] = actor;
         }
 
@@ -27,6 +30,8 @@ namespace Game.Scripts.GameplayLogic.Services
         {
             if (_allActorById.ContainsKey(actorId))
                 _allActorById.Remove(actorId);
+            
+            _allActorsIds.Remove(actorId);
         }
 
         public Actor GetActor(string actorId)
@@ -37,9 +42,10 @@ namespace Game.Scripts.GameplayLogic.Services
             return _allActorById[actorId];
         }
 
-        public List<Actor> GetAllActors()
-        {
-            return _allActors;
-        }
+        public List<Actor> GetAllActors() => 
+            _allActors;
+
+        public List<string> GetAllActorIds() => 
+            _allActorsIds;
     }
 }

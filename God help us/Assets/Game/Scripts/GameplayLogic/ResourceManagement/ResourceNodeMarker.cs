@@ -1,9 +1,8 @@
-﻿using System;
-using Game.Scripts.Common;
+﻿using Game.Scripts.Common;
 using Game.Scripts.Data.ResourcesData;
 using UnityEngine;
 
-namespace Game.Scripts.GameplayLogic.ResourceLogic
+namespace Game.Scripts.GameplayLogic.ResourceManagement
 {
     public class ResourceNodeMarker : MonoBehaviour
     {

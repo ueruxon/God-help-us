@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Game.Scripts.Data.Buildings;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.Buildings
 {
-    public class Storage : MonoBehaviour
+    [RequireComponent(typeof(Building))]
+    public class Storage : MonoBehaviour, IResourceRequester
     {
         private const int StorageCapacity = 42;
         
@@ -16,17 +18,26 @@ namespace Game.Scripts.GameplayLogic.Buildings
         private Transform[] _resourceFillers;
         private int _activeFillerIndex;
 
-        private List<string> _registeredResources;
-        private int _registeredCount;
+        private List<Resource> _registeredResources;
+        private Stack<Resource> _storedResources;
+
         private int _resourceCount;
+        private int _registeredCount;
+        private int _requestedCount;
+        private int _requestedResourceIndex;
 
         public void Construct(StorageConfig config)
         {
             _data = config;
             _resourceFillers = new Transform[StorageCapacity];
             _activeFillerIndex = 0;
-            _registeredResources = new List<string>();
+            _registeredResources = new List<Resource>();
+            _storedResources = new Stack<Resource>();
+
+            _resourceCount = 0;
             _registeredCount = 0;
+            _requestedCount = 0;
+            _requestedResourceIndex = 0;
 
             GenerateResourceFillers();
         }
@@ -36,44 +47,72 @@ namespace Game.Scripts.GameplayLogic.Buildings
         
         public bool HasResource() => 
             _resourceCount > 0;
-        
+
+        public bool CanRequestResource() => 
+            _requestedCount + 1 <= _resourceCount;
+
         public bool IsFull() => 
             _resourceCount == StorageCapacity;
-        
-        public bool RegisterResource(string id)
+
+        public bool RegisterResource(Resource resource)
         {
             if (_registeredCount + 1 <= StorageCapacity)
             {
                 _registeredCount++;
-                _registeredResources.Add(id);
+                _registeredResources.Add(resource);
                 return true;
             }
             
             return false;
         }
 
-        public bool UnregisterResource(string id)
+        public bool UnregisterResource(Resource resource)
         {
-            if (_registeredResources.Contains(id))
+            if (_registeredResources.Contains(resource))
             {
                 _registeredCount--;
-                _registeredResources.Remove(id);
+                _registeredResources.Remove(resource);
                 return true;
             }
             
             return false;
         }
 
-        public bool ContainsResource(string id) => 
-            _registeredResources.Contains(id);
+        public Resource RequestResource()
+        {
+            Resource resource = _registeredResources[_requestedResourceIndex];
+            
+            _requestedCount++;
+            _requestedResourceIndex++;
+            
+            return resource;
+        }
 
-        public void Delivery()
+        public void GetResource(string id)
+        {
+            //Resource resource = _storedResources[_requestedResourceIndex];
+        
+            
+            _resourceFillers[_activeFillerIndex].gameObject.SetActive(false);
+            
+            _resourceCount--;
+            _activeFillerIndex--;
+            _requestedCount--;
+        }
+
+        public bool ContainsResource(Resource resource) => 
+            _registeredResources.Contains(resource);
+
+        public void Delivery(Resource resource)
         {
             _resourceFillers[_activeFillerIndex].gameObject.SetActive(true);
             _activeFillerIndex++;
             _resourceCount++;
 
-            //_resourceRepository.AddResource(resource.GetResourceType(), 1);
+            resource.transform.SetParent(transform);
+            resource.gameObject.SetActive(false);
+
+            _storedResources.Push(resource);
         }
 
         private void GenerateResourceFillers()

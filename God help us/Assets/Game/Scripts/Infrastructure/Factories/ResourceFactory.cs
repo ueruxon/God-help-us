@@ -1,6 +1,6 @@
 ﻿using System;
 using Game.Scripts.Data.ResourcesData;
-using Game.Scripts.GameplayLogic.ResourceLogic;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 using Game.Scripts.Infrastructure.Services.AssetManagement;
 using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
@@ -23,7 +23,10 @@ namespace Game.Scripts.Infrastructure.Factories
         {
             ResourceNodeConfig data = _configProvider.GetDataForResourceNode(type);
             ResourceNode node = _assetProvider.Instantiate(data.Prefab, at);
-            node.Construct(data);
+            
+            string id = Guid.NewGuid().ToString();
+            node.Construct(id, data);
+            node.name = $"ResourceNode: {type.ToString()}, id: {id}";
 
             return node;
         }
