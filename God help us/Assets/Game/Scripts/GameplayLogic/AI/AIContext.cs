@@ -2,6 +2,7 @@
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI.Systems.Movement;
 using Game.Scripts.GameplayLogic.Buildings;
+using Game.Scripts.GameplayLogic.JobManagement;
 using Game.Scripts.GameplayLogic.Registers;
 using Game.Scripts.GameplayLogic.ResourceManagement;
 
@@ -31,14 +32,22 @@ namespace Game.Scripts.GameplayLogic.AI
             _buildingRegistry = buildingRegistry;
         }
 
-        public Storage GetStorageForResource(Resource resource)
+        public IResourceRequester GetResourceRequester(Resource resource)
         {
             List<Storage> storages = _buildingRegistry.GetStorages(resource.Type);
 
             foreach (Storage storage in storages)
             {
-                if (storage.ContainsResource(resource))
+                if (storage.ContainsRegisterResource(resource))
                     return storage;
+            }
+            
+            List<Building> buildings = _buildingRegistry.GetAllBuildings();
+
+            foreach (Building building in buildings)
+            {
+                if (building.ContainsResource(resource))
+                    return building;
             }
             
             throw new KeyNotFoundException($"No found storage for resource {resource.Id}");

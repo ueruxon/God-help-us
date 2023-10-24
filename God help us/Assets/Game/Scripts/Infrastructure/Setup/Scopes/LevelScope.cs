@@ -28,7 +28,7 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
             
             builder.Register<BuildingFactory>(Lifetime.Scoped);
             builder.Register<BuildingRegistry>(Lifetime.Scoped);
-            builder.Register<BuildingConstructor>(Lifetime.Scoped);
+            builder.Register<BuildingCoordinator>(Lifetime.Scoped);
 
             builder.Register<ActorRegistry>(Lifetime.Scoped);
             builder.Register<AIReporter>(Lifetime.Scoped);

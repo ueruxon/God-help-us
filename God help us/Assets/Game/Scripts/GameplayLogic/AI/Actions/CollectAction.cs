@@ -1,5 +1,5 @@
-﻿using Game.Scripts.GameplayLogic.JobManagement;
-using Game.Scripts.GameplayLogic.ResourceManagement;
+﻿using Game.Scripts.Common.Interfaces;
+using Game.Scripts.GameplayLogic.JobManagement;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI.Actions
@@ -8,7 +8,7 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
     public class CollectAction : AIAction
     {
         private Job _currentJob;
-        private Resource _resource;
+        private IResourceProvider _resourceProvider;
         
         public override void OnEnter(AIContext context)
         {
@@ -16,9 +16,9 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
             base.OnEnter(context);
             
             _currentJob = context.JobPlanner.GetJob();
-            _resource = _currentJob.JobData.Resource;
+            _resourceProvider = _currentJob.JobData.Provider;
             
-            context.MovementSystem.SetDestination(_resource.transform.position);
+            context.MovementSystem.SetDestination(_resourceProvider.GetPosition());
             context.Animator.PlayWalking(true);
         }
 
@@ -27,7 +27,7 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
             if (context.MovementSystem.ReachedDestination())
             {
                 context.Animator.PlayWalking(false);
-                context.Backpack.Pickup(_resource);
+                context.Backpack.Pickup(_resourceProvider.GetResource());
                 
                 _currentJob.ChangeStatus(Job.Status.Completed);
                 ChangeStatus(ActionStatus.Completed);
@@ -38,7 +38,7 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
         {
             context.Animator.PlayWalking(false);
 
-            _resource = null;
+            _resourceProvider = null;
             _currentJob = null;
 
             Debug.Log("Exit on Collect");

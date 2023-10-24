@@ -45,6 +45,14 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations
             return false;
         }
 
+        public bool HasConstructJob(AIContext context)
+        {
+            if (context.JobPlanner.HasJob())
+                return context.JobPlanner.GetJob().Category == JobCategory.Construct;
+            
+            return false;
+        }
+
         public bool HasResourceInInventory(AIContext context)
         {
             if (context.Backpack.HasItem())

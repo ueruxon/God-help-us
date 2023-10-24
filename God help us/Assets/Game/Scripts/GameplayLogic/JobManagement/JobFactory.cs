@@ -1,4 +1,5 @@
-﻿using Game.Scripts.GameplayLogic.ResourceManagement;
+﻿using Game.Scripts.Common.Interfaces;
+using Game.Scripts.GameplayLogic.ResourceManagement;
 
 namespace Game.Scripts.GameplayLogic.JobManagement
 {
@@ -14,11 +15,11 @@ namespace Game.Scripts.GameplayLogic.JobManagement
             return job;
         }
         
-        public Job CreateJob(JobCategory jobCategory, Resource resource)
+        public Job CreateJob(JobCategory jobCategory, IResourceProvider resourceProvider)
         {
             Job job = new Job(jobCategory, (int)jobCategory, new JobData
             {
-                Resource = resource
+                Provider = resourceProvider
             });
 
             return job;

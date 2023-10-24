@@ -1,7 +1,9 @@
-﻿namespace Game.Scripts.Common.Interfaces
+﻿using Game.Scripts.GameplayLogic.ResourceManagement;
+
+namespace Game.Scripts.Common.Interfaces
 {
-    public interface IResourceProvider
+    public interface IResourceProvider : IEntity
     {
-        
+        public Resource GetResource();
     }
 }

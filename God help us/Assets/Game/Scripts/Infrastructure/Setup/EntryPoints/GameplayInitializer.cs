@@ -48,7 +48,7 @@ namespace Game.Scripts.Infrastructure.Setup.EntryPoints
         public void Start()
         {
             // for test
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 2; i++)
             {
                 Actor actor = _actorFactory.CreateActor(ActorType.Villager, new Vector3(0, 0, i + 2));
                 actor.Init();

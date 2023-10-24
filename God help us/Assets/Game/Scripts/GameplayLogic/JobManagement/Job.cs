@@ -1,5 +1,6 @@
 ﻿using System;
 using Game.Scripts.Common.DataStructures.Heap;
+using Game.Scripts.Common.Interfaces;
 using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
@@ -51,6 +52,6 @@ namespace Game.Scripts.GameplayLogic.JobManagement
     public struct JobData
     {
         public IGatherableResource Node;
-        public Resource Resource;
+        public IResourceProvider Provider;
     }
 }

@@ -40,7 +40,8 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
                 {When.IsDontMove, GetInput.IsTrue, ScoreCalculator.AsIs, ActionType.Idle, "Idle"},
                 {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Mining, "Mining"},
                 {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Collect, "Collect Item"},
-                {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), ActionType.Delivery, "Delivery"},
+                {When.HasConstructJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), ActionType.Collect, "Construct"},
+                {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+50), ActionType.Delivery, "Delivery"},
                 {When.AnyAvailableJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+10), ActionType.JobRequested, "Job Requested"},
                 {When.IsWorkerFreelancer, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Freelance, "Freelance"},
             };

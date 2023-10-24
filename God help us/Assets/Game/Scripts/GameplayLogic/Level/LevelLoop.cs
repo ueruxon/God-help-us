@@ -13,19 +13,19 @@ namespace Game.Scripts.GameplayLogic.Level
     public class LevelLoop : ITickable
     {
         private readonly BuildingRegistry _buildingRegistry;
-        private readonly BuildingConstructor _buildingConstructor;
+        private readonly BuildingCoordinator _buildingCoordinator;
         private readonly ResourceCoordinator _resourceCoordinator;
         private readonly JobController _jobController;
         private readonly JobFactory _jobFactory;
 
         public LevelLoop(BuildingRegistry buildingRegistry,
-            BuildingConstructor buildingConstructor,
-            ResourceCoordinator resourceCoordinator, 
-            JobController jobController, 
+            BuildingCoordinator buildingCoordinator,
+            ResourceCoordinator resourceCoordinator,
+            JobController jobController,
             JobFactory jobFactory)
         {
             _buildingRegistry = buildingRegistry;
-            _buildingConstructor = buildingConstructor;
+            _buildingCoordinator = buildingCoordinator;
             _resourceCoordinator = resourceCoordinator;
             _jobController = jobController;
             _jobFactory = jobFactory;
@@ -33,39 +33,20 @@ namespace Game.Scripts.GameplayLogic.Level
 
         public void Init()
         {
-            _resourceCoordinator.ResourceSpawned += ResourceWasSpawned;
-            _buildingConstructor.ProductionBuildingCreated += ProductionBuildingWasCreated;
-            _buildingConstructor.StorageCreated += StorageWasCreated;
+            _resourceCoordinator.ResourceSpawned += RegisterResourceInStorage;
+            _buildingCoordinator.ProductionBuildingCreated += ProductionBuildingWasCreated;
+            _buildingCoordinator.StorageCreated += RegisterResourceInStorage;
         }
+        
 
-        private void ResourceWasSpawned()
+        private void RegisterResourceInStorage()
         {
-            Queue<Resource> resourcesOnLevel = _resourceCoordinator.GetAllResourcesOnLevel();
-            int resourceCount = resourcesOnLevel.Count;
+            List<Storage> storages = _buildingRegistry.GetStorages();
 
-            for (int i = 0; i < resourceCount; i++)
+            foreach (Storage storage in storages)
             {
-                Resource resource = resourcesOnLevel.Dequeue();
-                
-                if (RegisterResourceInStorage(resource) == false) 
-                    resourcesOnLevel.Enqueue(resource);
-            }
-        }
-
-        private void StorageWasCreated()
-        {
-            Queue<Resource> resourcesOnLevel = _resourceCoordinator.GetAllResourcesOnLevel();
-            int resourceCount = resourcesOnLevel.Count;
-
-            if (resourceCount > 0)
-            {
-                for (int i = 0; i < resourceCount; i++)
-                {
-                    Resource resource = resourcesOnLevel.Dequeue();
-                
-                    if (RegisterResourceInStorage(resource) == false) 
-                        resourcesOnLevel.Enqueue(resource);
-                }
+                if (!storage.IsFull()) 
+                    _resourceCoordinator.RegisterResources(storage);
             }
         }
 
@@ -75,33 +56,15 @@ namespace Game.Scripts.GameplayLogic.Level
             building.ResourceCanSpawn += SpawnResource;
         }
 
-        private void SpawnResource(ResourceType type, Vector3 position) => 
+        private void SpawnResource(ResourceType type, Vector3 position) =>
             _resourceCoordinator.SpawnResource(type, position);
-
-        private bool RegisterResourceInStorage(Resource resource)
-        {
-            List<Storage> storages = _buildingRegistry.GetStorages(resource.Type);
-            
-            foreach (Storage storage in storages)
-            {
-                if (storage.IsFull() == false)
-                {
-                    if (storage.RegisterResource(resource))
-                    {
-                        _jobController.AddJob(_jobFactory.CreateJob(JobCategory.Collect, resource));
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
+        
 
         public void Cleanup()
         {
-            _resourceCoordinator.ResourceSpawned -= ResourceWasSpawned;
-            _buildingConstructor.ProductionBuildingCreated -= ProductionBuildingWasCreated;
-            _buildingConstructor.StorageCreated -= StorageWasCreated;
+            _resourceCoordinator.ResourceSpawned -= RegisterResourceInStorage;
+            _buildingCoordinator.ProductionBuildingCreated -= ProductionBuildingWasCreated;
+            _buildingCoordinator.StorageCreated -= RegisterResourceInStorage;
 
             foreach (ProductionBuilding building in _buildingRegistry.GetAllProductionBuildings())
                 building.ResourceCanSpawn -= SpawnResource;
@@ -113,12 +76,12 @@ namespace Game.Scripts.GameplayLogic.Level
 
             if (Input.GetKeyDown(KeyCode.G))
             {
-                _buildingConstructor.CreateStorage(ResourceType.Wood, new Vector3(-10, 0, -10));
+                _buildingCoordinator.CreateStorage(ResourceType.Wood, new Vector3(-10, 0, -10));
             }
-            
+
             if (Input.GetKeyDown(KeyCode.H))
             {
-                _buildingConstructor.CreateProductionBuilding(ProductionCategory.Lumber, new Vector3(10, 0, -10));
+                _buildingCoordinator.CreateProductionBuilding(ProductionCategory.Lumber, new Vector3(20, 0, -20));
             }
         }
     }

@@ -19,6 +19,7 @@ namespace Game.Scripts.GameplayLogic.Actors
         public void Pickup(Resource resource)
         {
             _item = resource;
+            _item.gameObject.SetActive(true);
             _item.transform.SetParent(_container);
             _item.transform.position = _container.position;
             _item.transform.rotation = _container.rotation;
@@ -26,8 +27,9 @@ namespace Game.Scripts.GameplayLogic.Actors
 
         public void Drop()
         {
-            //Object.Destroy(_item.gameObject);
-            //_item.transform.SetParent(null);
+            if (HasItem())
+                _item.transform.SetParent(null);
+            
             _item = null;
         }
 

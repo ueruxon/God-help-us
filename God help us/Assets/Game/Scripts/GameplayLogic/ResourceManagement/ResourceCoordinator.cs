@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Game.Scripts.Common.Extensions;
 using Game.Scripts.Data.ResourcesData;
+using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.JobManagement;
 using Game.Scripts.Infrastructure.Factories;
 using Game.Scripts.Infrastructure.Services.Config;
@@ -22,7 +24,7 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
         private readonly List<ResourceNode> _allNodes;
         private readonly Dictionary<string, ResourceNode> _allNodeById;
 
-        private readonly Queue<Resource> _resources;
+        private readonly List<Resource> _unregisteredResources;
 
         public ResourceCoordinator(IConfigProvider configProvider, 
             ResourceFactory resourceFactory, 
@@ -36,7 +38,7 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
 
             _allNodeById = new Dictionary<string, ResourceNode>();
             _allNodes = new List<ResourceNode>();
-            _resources = new Queue<Resource>();
+            _unregisteredResources = new List<Resource>();
         }
 
         public void Init()
@@ -53,9 +55,19 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
                 _allNodes.Add(node);
             }
         }
-
-        public Queue<Resource> GetAllResourcesOnLevel() => 
-            _resources;
+        
+        public void RegisterResources(IResourceRequester requester)
+        {
+            foreach (Resource resource in _unregisteredResources.ToList()) {
+                
+                if (requester.Register(resource))
+                {
+                    _jobController.AddJob(
+                        _jobFactory.CreateJob(JobCategory.Collect, new ResourceOrder(resource)));
+                    _unregisteredResources.Remove(resource);
+                }
+            }
+        }
         
         public void Tick()
         {
@@ -76,7 +88,7 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
         public void SpawnResource(ResourceType resourceType, Vector3 position)
         {
             Resource resource = _resourceFactory.CreateResource(resourceType, position);
-            _resources.Enqueue(resource);
+            _unregisteredResources.Add(resource);
 
             ResourceSpawned?.Invoke();
         }

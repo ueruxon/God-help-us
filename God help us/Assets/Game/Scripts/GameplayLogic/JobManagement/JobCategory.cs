@@ -4,7 +4,8 @@
     {
         Farm = 1,
         Collect = 2,
-        Mining = 3,
-        Construct = 4
+        Delivery = 3,
+        Mining = 4,
+        Construct = 5
     }
 }

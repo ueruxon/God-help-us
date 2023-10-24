@@ -11,6 +11,6 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations
             (input, hero) => input * scale;
         
         public Func<float, AIContext, float> IncreaseBy(int value) => 
-            (input, hero) => input * value;
+            (input, hero) => input + value;
     }
 }

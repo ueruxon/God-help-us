@@ -19,4 +19,4 @@ MonoBehaviour:
   BuildingConfig:
     RequiredResources:
     - Type: 0
-      ResourceAmount: 3
+      ResourceAmount: 2

@@ -26,20 +26,28 @@ namespace Game.Scripts.GameplayLogic.Buildings
         public string Id => _id;
         private string _id;
         private BuildingConfig _buildingConfig;
-        private Dictionary<ResourceType, int> _requiredConstructionResources;
 
+        private Dictionary<ResourceType, int> _requiredResourcesForConstruction;
+        private Dictionary<ResourceType, int> _registeredResourcesForConstruction;
+        private List<Resource> _registeredResources;
+        
         private BuildingStage _stage;
 
         public void Construct(string id, BuildingConfig buildingConfig)
         {
             _id = id;
             _buildingConfig = buildingConfig;
-            _requiredConstructionResources = new Dictionary<ResourceType, int>();
+            _requiredResourcesForConstruction = new Dictionary<ResourceType, int>();
+            _registeredResourcesForConstruction = new Dictionary<ResourceType, int>();
+            _registeredResources = new List<Resource>();
 
             if (buildingConfig is not null)
             {
                 foreach (ConstructionData data in buildingConfig.RequiredResources)
-                    _requiredConstructionResources.Add(data.Type, data.ResourceAmount);
+                {
+                    _requiredResourcesForConstruction[data.Type] = data.ResourceAmount;
+                    _registeredResourcesForConstruction[data.Type] = 0;
+                }
             }
 
             _stage = BuildingStage.Released;
@@ -58,17 +66,39 @@ namespace Game.Scripts.GameplayLogic.Buildings
         public Vector3 GetPosition() => 
             transform.position;
 
-        public List<ConstructionData> GetRequiredConstructionData() => 
-            _buildingConfig.RequiredResources;
+        public bool IsValidType(ResourceType type) => 
+            _requiredResourcesForConstruction.ContainsKey(type);
+
+        public bool Register(Resource resource)
+        {
+            if (_requiredResourcesForConstruction.ContainsKey(resource.Type))
+            {
+                int currentCount = _registeredResourcesForConstruction[resource.Type];
+                if (currentCount + 1 <= _requiredResourcesForConstruction[resource.Type])
+                {
+                    _registeredResourcesForConstruction[resource.Type]++;
+                    _registeredResources.Add(resource);
+
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        public bool ContainsResource(Resource resource) =>
+            _registeredResources.Contains(resource);
 
         public void Delivery(Resource resource)
         {
-            _requiredConstructionResources[resource.Type]++;
+            _requiredResourcesForConstruction[resource.Type]--;
+            _registeredResourcesForConstruction[resource.Type]--;
+            _registeredResources.Remove(resource);
+            
+            Destroy(resource.gameObject);
 
-            if (CheckRemainingResource())
-            {
+            if (CheckRemainingResource()) 
                 Build();
-            }
         }
 
         private void Build()
@@ -84,8 +114,8 @@ namespace Game.Scripts.GameplayLogic.Buildings
         {
             return _buildingConfig.RequiredResources.Any() && _buildingConfig.RequiredResources.All(x =>
             {
-                int currentCount = _requiredConstructionResources[x.Type];
-                return currentCount == x.ResourceAmount;
+                int currentCount = _requiredResourcesForConstruction[x.Type];
+                return currentCount <= 0;
             });
         }
     }

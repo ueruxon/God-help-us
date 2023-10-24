@@ -1,13 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Game.Scripts.Common.Interfaces;
 using Game.Scripts.Data.Buildings;
+using Game.Scripts.Data.ResourcesData;
 using Game.Scripts.GameplayLogic.ResourceManagement;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.Buildings
 {
     [RequireComponent(typeof(Building))]
-    public class Storage : MonoBehaviour, IResourceRequester
+    public class Storage : MonoBehaviour, IResourceRequester, IResourceProvider
     {
+        public event Action<Resource> ResourceDelivered;
+
         private const int StorageCapacity = 42;
         
         [SerializeField] private Transform _fillerContainer;
@@ -19,10 +24,9 @@ namespace Game.Scripts.GameplayLogic.Buildings
         private int _activeFillerIndex;
 
         private List<Resource> _registeredResources;
-        private Stack<Resource> _storedResources;
+        private Queue<Resource> _requestedResources;
+        private List<Resource> _storedResources;
 
-        private int _resourceCount;
-        private int _registeredCount;
         private int _requestedCount;
         private int _requestedResourceIndex;
 
@@ -32,10 +36,9 @@ namespace Game.Scripts.GameplayLogic.Buildings
             _resourceFillers = new Transform[StorageCapacity];
             _activeFillerIndex = 0;
             _registeredResources = new List<Resource>();
-            _storedResources = new Stack<Resource>();
+            _storedResources = new List<Resource>();
+            _requestedResources = new Queue<Resource>();
 
-            _resourceCount = 0;
-            _registeredCount = 0;
             _requestedCount = 0;
             _requestedResourceIndex = 0;
 
@@ -44,21 +47,20 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         public Vector3 GetPosition() => 
             _interactionPoint.position;
-        
-        public bool HasResource() => 
-            _resourceCount > 0;
 
-        public bool CanRequestResource() => 
-            _requestedCount + 1 <= _resourceCount;
+        public ResourceType GetStoredType() => 
+            _data.StoredType;
 
         public bool IsFull() => 
-            _resourceCount == StorageCapacity;
+            _registeredResources.Count == StorageCapacity;
 
-        public bool RegisterResource(Resource resource)
+        public bool CanRequestResource() =>
+            _requestedCount < _storedResources.Count;
+        
+        public bool Register(Resource resource)
         {
-            if (_registeredCount + 1 <= StorageCapacity)
+            if (resource.Type == _data.StoredType)
             {
-                _registeredCount++;
                 _registeredResources.Add(resource);
                 return true;
             }
@@ -66,53 +68,68 @@ namespace Game.Scripts.GameplayLogic.Buildings
             return false;
         }
 
-        public bool UnregisterResource(Resource resource)
+        public void UnregisterResource(Resource resource)
         {
-            if (_registeredResources.Contains(resource))
-            {
-                _registeredCount--;
+            if (_registeredResources.Contains(resource)) 
                 _registeredResources.Remove(resource);
-                return true;
-            }
-            
-            return false;
+
+            if (_storedResources.Contains(resource))
+                _storedResources.Remove(resource);
         }
 
         public Resource RequestResource()
         {
-            Resource resource = _registeredResources[_requestedResourceIndex];
-            
+            Resource resource = _storedResources[_requestedResourceIndex];
+            _requestedResources.Enqueue(resource);
             _requestedCount++;
-            _requestedResourceIndex++;
+
+            if (_requestedResourceIndex <= _storedResources.Count)
+                _requestedResourceIndex++;
             
             return resource;
         }
 
-        public void GetResource(string id)
+        public Resource GetResource()
         {
-            //Resource resource = _storedResources[_requestedResourceIndex];
-        
-            
-            _resourceFillers[_activeFillerIndex].gameObject.SetActive(false);
-            
-            _resourceCount--;
-            _activeFillerIndex--;
+            Resource resource = _requestedResources.Dequeue();
             _requestedCount--;
+            
+            if (_requestedResourceIndex > 0)
+                _requestedResourceIndex--;
+
+            UpdateVisualFillers(false);
+            UnregisterResource(resource);
+
+            return resource;
         }
 
-        public bool ContainsResource(Resource resource) => 
+        public bool ContainsRegisterResource(Resource resource) => 
             _registeredResources.Contains(resource);
 
         public void Delivery(Resource resource)
         {
-            _resourceFillers[_activeFillerIndex].gameObject.SetActive(true);
-            _activeFillerIndex++;
-            _resourceCount++;
+            _storedResources.Add(resource);
 
             resource.transform.SetParent(transform);
             resource.gameObject.SetActive(false);
 
-            _storedResources.Push(resource);
+            UpdateVisualFillers(true);
+            
+            ResourceDelivered?.Invoke(resource);
+        }
+
+        private void UpdateVisualFillers(bool incoming)
+        {
+            if (incoming)
+            {
+                _resourceFillers[_activeFillerIndex].gameObject.SetActive(true);
+                _activeFillerIndex++;
+            }
+            else
+            {
+                _activeFillerIndex--;
+                _resourceFillers[_activeFillerIndex].gameObject.SetActive(false);
+            }
         }
 
         private void GenerateResourceFillers()
