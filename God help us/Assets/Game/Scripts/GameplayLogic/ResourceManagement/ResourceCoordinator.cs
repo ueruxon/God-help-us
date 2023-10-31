@@ -14,7 +14,7 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
 {
     public class ResourceCoordinator : ITickable
     {
-        public event Action ResourceSpawned;
+        public event Action<ResourceType> ResourceSpawned;
         
         private readonly IConfigProvider _configProvider;
         private readonly ResourceFactory _resourceFactory;
@@ -90,7 +90,7 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
             Resource resource = _resourceFactory.CreateResource(resourceType, position);
             _unregisteredResources.Add(resource);
 
-            ResourceSpawned?.Invoke();
+            ResourceSpawned?.Invoke(resourceType);
         }
 
         public void Cleanup()

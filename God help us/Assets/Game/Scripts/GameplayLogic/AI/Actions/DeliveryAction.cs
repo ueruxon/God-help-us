@@ -16,8 +16,6 @@ namespace Game.Scripts.GameplayLogic.AI.Actions
             Resource resource = context.Backpack.GetItem();
             _customer = context.GetResourceRequester(resource);
             
-            Debug.Log($"Customer: {_customer.GetPosition()}");
-
             context.MovementSystem.SetDestination(_customer.GetPosition());
             context.Animator.PlayWalking(true);
         }

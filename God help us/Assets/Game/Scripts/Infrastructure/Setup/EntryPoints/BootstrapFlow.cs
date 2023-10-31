@@ -4,14 +4,14 @@ using VContainer.Unity;
 
 namespace Game.Scripts.Infrastructure.Setup.EntryPoints
 {
-    public class BootstrapInitializer : IInitializable, IStartable
+    public class BootstrapFlow : IInitializable, IStartable
     {
         private const string GameSceneName = "GameScene";
         
         private readonly SceneLoader _sceneLoader;
         private readonly IConfigProvider _configProvider;
 
-        public BootstrapInitializer(SceneLoader sceneLoader, IConfigProvider configProvider)
+        public BootstrapFlow(SceneLoader sceneLoader, IConfigProvider configProvider)
         {
             _sceneLoader = sceneLoader;
             _configProvider = configProvider;

@@ -20,6 +20,8 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
         
         protected override void Configure(IContainerBuilder builder)
         {
+            Debug.Log("Configure from levelScope");
+            
             builder.Register<JobController>(Lifetime.Scoped);
             builder.Register<JobFactory>(Lifetime.Scoped);
             
@@ -28,7 +30,8 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
             
             builder.Register<BuildingFactory>(Lifetime.Scoped);
             builder.Register<BuildingRegistry>(Lifetime.Scoped);
-            builder.Register<BuildingCoordinator>(Lifetime.Scoped);
+            builder.Register<BuildingConstructor>(Lifetime.Scoped);
+            builder.Register<BuildingResolver>(Lifetime.Scoped);
 
             builder.Register<ActorRegistry>(Lifetime.Scoped);
             builder.Register<AIReporter>(Lifetime.Scoped);
@@ -38,7 +41,7 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
             
             builder.RegisterComponentInNewPrefab(_debugWindow, Lifetime.Scoped).UnderTransform(_uiRoot);
 
-            builder.RegisterEntryPoint<GameplayInitializer>();
+            builder.RegisterEntryPoint<GameplayFlow>();
         }
     }
 }

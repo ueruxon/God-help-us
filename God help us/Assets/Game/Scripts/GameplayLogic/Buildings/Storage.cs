@@ -11,7 +11,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
     [RequireComponent(typeof(Building))]
     public class Storage : MonoBehaviour, IResourceRequester, IResourceProvider
     {
-        public event Action<Resource> ResourceDelivered;
+        public event Action<string> ResourceDelivered;
 
         private const int StorageCapacity = 42;
         
@@ -19,6 +19,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
         [SerializeField] private Transform _interactionPoint;
 
         private StorageConfig _data;
+        private Building _building;
         
         private Transform[] _resourceFillers;
         private int _activeFillerIndex;
@@ -30,9 +31,10 @@ namespace Game.Scripts.GameplayLogic.Buildings
         private int _requestedCount;
         private int _requestedResourceIndex;
 
-        public void Construct(StorageConfig config)
+        public void Construct(StorageConfig config, Building building)
         {
             _data = config;
+            _building = building;
             _resourceFillers = new Transform[StorageCapacity];
             _activeFillerIndex = 0;
             _registeredResources = new List<Resource>();
@@ -41,6 +43,8 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
             _requestedCount = 0;
             _requestedResourceIndex = 0;
+            
+            _building.Constructed += OnBuildingConstructed;
 
             GenerateResourceFillers();
         }
@@ -56,7 +60,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         public bool CanRequestResource() =>
             _requestedCount < _storedResources.Count;
-        
+
         public bool Register(Resource resource)
         {
             if (resource.Type == _data.StoredType)
@@ -80,13 +84,18 @@ namespace Game.Scripts.GameplayLogic.Buildings
         public Resource RequestResource()
         {
             Resource resource = _storedResources[_requestedResourceIndex];
+            return resource;
+        }
+
+        public void Resolve()
+        {
+            Resource resource = _storedResources[_requestedResourceIndex];
             _requestedResources.Enqueue(resource);
             _requestedCount++;
 
             if (_requestedResourceIndex <= _storedResources.Count)
                 _requestedResourceIndex++;
             
-            return resource;
         }
 
         public Resource GetResource()
@@ -115,7 +124,12 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
             UpdateVisualFillers(true);
             
-            ResourceDelivered?.Invoke(resource);
+            ResourceDelivered?.Invoke(_building.Id);
+        }
+
+        private void OnBuildingConstructed(string id)   
+        {
+            
         }
 
         private void UpdateVisualFillers(bool incoming)

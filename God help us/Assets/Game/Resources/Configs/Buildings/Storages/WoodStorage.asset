@@ -16,3 +16,8 @@ MonoBehaviour:
   FillerPrefab: {fileID: 7000152180736851947, guid: a3410b9a45ec5654596a5a1eca9ab2db,
     type: 3}
   StoredType: 0
+  BuildingConfig:
+    Category: 0
+    RequiredResources:
+    - Type: 0
+      ResourceAmount: 2

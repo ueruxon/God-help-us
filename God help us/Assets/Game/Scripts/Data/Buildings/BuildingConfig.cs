@@ -7,6 +7,7 @@ namespace Game.Scripts.Data.Buildings
     [Serializable]
     public class BuildingConfig
     {
+        public BuildingCategory Category;
         public List<ConstructionData> RequiredResources;
     }
 

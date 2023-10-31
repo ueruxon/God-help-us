@@ -14,6 +14,8 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
         
         protected override void Configure(IContainerBuilder builder)
         {
+            Debug.Log("Configure from BootstrapScope");
+            
             builder.Register<IAssetProvider, AssetProvider>(Lifetime.Singleton);
             builder.Register<IConfigProvider, ConfigProvider>(Lifetime.Singleton);
 
@@ -21,7 +23,7 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
 
             builder.RegisterComponentInNewPrefab(_loadingCurtainPrefab, Lifetime.Singleton).DontDestroyOnLoad();
             
-            builder.RegisterEntryPoint<BootstrapInitializer>();
+            builder.RegisterEntryPoint<BootstrapFlow>();
         }
     }
 }

@@ -45,10 +45,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         public Vector3 GetPosition() =>
             _interactionPoint.position;
-
-        public Building GetBuilding() => 
-            _building;
-
+        
         public bool IsAvailable() => 
             _state == ProductionState.Freely;
 

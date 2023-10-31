@@ -11,15 +11,13 @@ namespace Game.Scripts.GameplayLogic.Buildings
     public enum BuildingStage
     {
         Released,
-        Construction,
         Active
     }
 
     public class Building : MonoBehaviour, IResourceRequester
     {
-        public event Action<string> Released; 
         public event Action<string> Constructed;
-        
+
         [SerializeField] private Transform _activeBuildingView;
         [SerializeField] private Transform _constructionView;
 
@@ -30,7 +28,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
         private Dictionary<ResourceType, int> _requiredResourcesForConstruction;
         private Dictionary<ResourceType, int> _registeredResourcesForConstruction;
         private List<Resource> _registeredResources;
-        
+
         private BuildingStage _stage;
 
         public void Construct(string id, BuildingConfig buildingConfig)
@@ -41,32 +39,31 @@ namespace Game.Scripts.GameplayLogic.Buildings
             _registeredResourcesForConstruction = new Dictionary<ResourceType, int>();
             _registeredResources = new List<Resource>();
 
-            if (buildingConfig is not null)
+            foreach (ConstructionData data in buildingConfig.RequiredResources)
             {
-                foreach (ConstructionData data in buildingConfig.RequiredResources)
-                {
-                    _requiredResourcesForConstruction[data.Type] = data.ResourceAmount;
-                    _registeredResourcesForConstruction[data.Type] = 0;
-                }
+                _requiredResourcesForConstruction[data.Type] = data.ResourceAmount;
+                _registeredResourcesForConstruction[data.Type] = 0;
             }
-
-            _stage = BuildingStage.Released;
         }
 
         public void Prepare()
         {
-            _stage = BuildingStage.Construction;
+            _stage = BuildingStage.Released;
 
             _activeBuildingView.gameObject.SetActive(false);
             _constructionView.gameObject.SetActive(true);
-            
-            Released?.Invoke(_id);
         }
 
-        public Vector3 GetPosition() => 
+        public Vector3 GetPosition() =>
             transform.position;
 
-        public bool IsValidType(ResourceType type) => 
+        public BuildingCategory GetCategory() => 
+            _buildingConfig.Category;
+
+        public bool IsReleased() => 
+            _stage == BuildingStage.Released;
+
+        public bool IsValidType(ResourceType type) =>
             _requiredResourcesForConstruction.ContainsKey(type);
 
         public bool Register(Resource resource)
@@ -82,7 +79,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
                     return true;
                 }
             }
-            
+
             return false;
         }
 
@@ -94,10 +91,10 @@ namespace Game.Scripts.GameplayLogic.Buildings
             _requiredResourcesForConstruction[resource.Type]--;
             _registeredResourcesForConstruction[resource.Type]--;
             _registeredResources.Remove(resource);
-            
+
             Destroy(resource.gameObject);
 
-            if (CheckRemainingResource()) 
+            if (CheckRemainingResource())
                 Build();
         }
 
@@ -106,7 +103,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
             _activeBuildingView.gameObject.SetActive(true);
             _constructionView.gameObject.SetActive(false);
             _stage = BuildingStage.Active;
-            
+
             Constructed?.Invoke(_id);
         }
 

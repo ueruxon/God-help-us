@@ -14,19 +14,21 @@ using VContainer.Unity;
 
 namespace Game.Scripts.Infrastructure.Setup.EntryPoints
 {
-    public class GameplayInitializer : IInitializable, IStartable
+    public class GameplayFlow : IInitializable, IStartable
     {
         private readonly ActorFactory _actorFactory;
         private readonly ResourceCoordinator _resourceCoordinator;
         private readonly IConfigProvider _configProvider;
         private readonly BuildingRegistry _buildingRegistry;
+        private readonly BuildingResolver _buildingResolver;
         private readonly AIDebugWindow _debugWindow;
         private readonly LevelLoop _levelLoop;
 
-        public GameplayInitializer(ActorFactory actorFactory, 
+        public GameplayFlow(ActorFactory actorFactory, 
             ResourceCoordinator resourceCoordinator, 
             IConfigProvider configProvider, 
             BuildingRegistry buildingRegistry,
+            BuildingResolver buildingResolver,
             AIDebugWindow debugWindow,
             LevelLoop levelLoop)
         {
@@ -34,6 +36,7 @@ namespace Game.Scripts.Infrastructure.Setup.EntryPoints
             _resourceCoordinator = resourceCoordinator;
             _configProvider = configProvider;
             _buildingRegistry = buildingRegistry;
+            _buildingResolver = buildingResolver;
             _levelLoop = levelLoop;
             _debugWindow = debugWindow;
         }
@@ -41,6 +44,7 @@ namespace Game.Scripts.Infrastructure.Setup.EntryPoints
         public void Initialize()
         {
             _resourceCoordinator.Init();
+            _buildingResolver.Init();
             _debugWindow.Init();
             _levelLoop.Init();
         }

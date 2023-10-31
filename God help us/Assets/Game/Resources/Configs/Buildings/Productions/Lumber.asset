@@ -17,6 +17,7 @@ MonoBehaviour:
   ProducedType: 0
   TimeToSpawnResource: 10
   BuildingConfig:
+    Category: 1
     RequiredResources:
     - Type: 0
       ResourceAmount: 2

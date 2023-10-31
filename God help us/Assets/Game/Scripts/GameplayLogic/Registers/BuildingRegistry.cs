@@ -13,6 +13,7 @@ namespace Game.Scripts.GameplayLogic.Registers
 
         private readonly List<Storage> _allStorages;
         private readonly Dictionary<ResourceType, List<Storage>> _storagesByType;
+        private readonly Dictionary<string, Storage> _storagesById;
 
         private readonly List<ProductionBuilding> _allProductionBuildings;
         private readonly Dictionary<string, ProductionBuilding> _productionBuildingById;
@@ -24,6 +25,7 @@ namespace Game.Scripts.GameplayLogic.Registers
 
             _allStorages = new List<Storage>();
             _storagesByType = new Dictionary<ResourceType, List<Storage>>();
+            _storagesById = new Dictionary<string, Storage>();
             foreach (ResourceType value in Enum.GetValues(typeof(ResourceType)))
                 _storagesByType[value] = new List<Storage>();
             
@@ -35,9 +37,10 @@ namespace Game.Scripts.GameplayLogic.Registers
         public void RegisterBuilding(string id, Building building) => 
             _allBuildingsById.Add(id, building);
 
-        public void RegisterStorage(ResourceType storedType, Storage storage)
+        public void RegisterStorage(string id, ResourceType storedType, Storage storage)
         {
             _storagesByType[storedType].Add(storage);
+            _storagesById[id] = storage;
             _allStorages.Add(storage);
         }
 
@@ -46,6 +49,9 @@ namespace Game.Scripts.GameplayLogic.Registers
 
         public List<Storage> GetStorages() => 
             _allStorages;
+
+        public Storage GetStorage(string buildingId) => 
+            _storagesById[buildingId];
 
         public void RegisterProductionBuilding(string id, ProductionBuilding productionBuilding)
         {
