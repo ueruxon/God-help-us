@@ -3,6 +3,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Game.Scripts.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace Game.Scripts.Infrastructure.Setup
 {
@@ -27,12 +30,12 @@ namespace Game.Scripts.Infrastructure.Setup
                 onLoadedCallback?.Invoke();
                 await UniTask.Yield();
             }
-            
-            AsyncOperation waitNextScene = SceneManager.LoadSceneAsync(nextScene);
 
-            while (!waitNextScene.isDone)
+            AsyncOperationHandle<SceneInstance> handler = Addressables.LoadSceneAsync(nextScene);
+
+            while (!handler.IsDone)
             {
-                _loadingCurtain.SetProgress(waitNextScene.progress);
+                _loadingCurtain.SetProgress(handler.PercentComplete);
                 await UniTask.Yield();
             }
 

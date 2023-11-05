@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Game.Scripts.Common.Extensions;
 using Game.Scripts.Data.ResourcesData;
 using Game.Scripts.GameplayLogic.Buildings;
@@ -41,13 +42,12 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
             _unregisteredResources = new List<Resource>();
         }
 
-        public void Init()
+        public async UniTask Init()
         {
             ResourceNodePointsConfig config = _configProvider.GetResourcesNodeConfigOnLevel();
-
             foreach (ResourcePointData data in config.ResourceNodePoints)
             {
-                ResourceNode node = _resourceFactory.CreateResourceNode(data.Type, data.Position);
+                ResourceNode node = await _resourceFactory.CreateResourceNode(data.Type, data.Position);
                 node.WorkedOut += SpawnResource;
                 node.Init();
 
@@ -85,18 +85,21 @@ namespace Game.Scripts.GameplayLogic.ResourceManagement
             }
         }
 
-        public void SpawnResource(ResourceType resourceType, Vector3 position)
-        {
-            Resource resource = _resourceFactory.CreateResource(resourceType, position);
-            _unregisteredResources.Add(resource);
-
-            ResourceSpawned?.Invoke(resourceType);
-        }
+        public void SpawnResource(ResourceType resourceType, Vector3 position) => 
+            SpawnResourceAsync(resourceType, position).Forget();
 
         public void Cleanup()
         {
             foreach (ResourceNode node in _allNodes) 
                 node.WorkedOut -= SpawnResource;
+        }
+
+        private async UniTaskVoid SpawnResourceAsync(ResourceType resourceType, Vector3 position)
+        {
+            Resource resource = await _resourceFactory.CreateResource(resourceType, position);
+            _unregisteredResources.Add(resource);
+
+            ResourceSpawned?.Invoke(resourceType);
         }
     }
 }

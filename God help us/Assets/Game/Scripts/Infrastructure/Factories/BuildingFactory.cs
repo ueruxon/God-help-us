@@ -30,7 +30,7 @@ namespace Game.Scripts.Infrastructure.Factories
             Building building = productionBuilding.GetComponent<Building>();
 
             string id = Guid.NewGuid().ToString();
-            building.Construct(id, config.BuildingConfig);
+            building.Construct(id, config.BuildingData);
             productionBuilding.Construct(config, building);
 
             _buildingRegistry.RegisterBuilding(id, building);
@@ -47,7 +47,7 @@ namespace Game.Scripts.Infrastructure.Factories
             
             string id = Guid.NewGuid().ToString();
 
-            building.Construct(id, config.BuildingConfig);
+            building.Construct(id, config.BuildingData);
             storage.Construct(config, building);
 
             _buildingRegistry.RegisterBuilding(id, building);

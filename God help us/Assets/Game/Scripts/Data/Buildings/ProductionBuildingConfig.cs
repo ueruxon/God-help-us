@@ -12,7 +12,7 @@ namespace Game.Scripts.Data.Buildings
         public ResourceType ProducedType;
 
         public float TimeToSpawnResource = 10f;
-
-        public BuildingConfig BuildingConfig;
+        
+        public BuildingData BuildingData;
     }
 }

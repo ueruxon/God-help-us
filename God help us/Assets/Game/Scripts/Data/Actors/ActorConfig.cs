@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI;
-using Game.Scripts.GameplayLogic.AI.Actions;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace Game.Scripts.Data.Actors
 {
@@ -13,7 +12,7 @@ namespace Game.Scripts.Data.Actors
     {
         [EnumToggleButtons] 
         public ActorType Type;
-        public Actor Prefab;
+        public AssetReference PrefabReference;
         public AIConfig AIConfig;
     }
 

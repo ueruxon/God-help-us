@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Configs
+  m_EditorClassIdentifier: 
+  m_GroupName: Configs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 395312367e47d3e48b28cc57a2b997b8
+  m_SerializeEntries:
+  - m_GUID: 9396df7c5bb9216489b563ce03f5e09e
+    m_Address: Assets/Game/_Bundles/Configs/Buildings/WoodStorage.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BuildingConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9ad6c258902f28149b45e93ff9f7ec9e
+    m_Address: Assets/Game/_Bundles/Configs/Buildings/Lumber.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - BuildingConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 73765d50c7e10d644afdef60b5f56526
+    m_Address: Assets/Game/_Bundles/Configs/Actors/Villager.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ActorConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34e5ee5aa4322ee498c9eab69ca6c231
+    m_Address: ResourceNodesOnLevel
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7f75c080722cbf4889775c376893df8
+    m_Address: Tree
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResourceNodeConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9c6483290a3843a4d9889812f7e36a1f
+    m_Address: Wood
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - ResourceConfig
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d4ec81cca40626f46a1e231cdfa83d14, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 45249cd68a122564fad68b6082f9d7d8, type: 2}
+    - {fileID: 11400000, guid: 1186f285bf6318549af377bf841fdcb6, type: 2}

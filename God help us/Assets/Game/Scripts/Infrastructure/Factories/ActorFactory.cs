@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.Actors;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI;
@@ -37,11 +38,17 @@ namespace Game.Scripts.Infrastructure.Factories
             _jobController = jobController;
             _aiReporter = reporter;
         }
+
+        public void PreloadAssets()
+        {
+            
+        }
         
-        public Actor CreateActor(ActorType actorType, Vector3 at)
+        public async UniTask<Actor> CreateActor(ActorType actorType, Vector3 at)
         {
             ActorConfig config = _configProvider.GetDataForActor(actorType);
-            Actor actor = _assetProvider.Instantiate(config.Prefab, at);
+            GameObject prefab = await _assetProvider.LoadAsync<GameObject>(config.PrefabReference);
+            Actor actor = _assetProvider.Instantiate(prefab, at).GetComponent<Actor>();
             string id = Guid.NewGuid().ToString();
 
             AIAgent agent = actor.GetComponent<AIAgent>();

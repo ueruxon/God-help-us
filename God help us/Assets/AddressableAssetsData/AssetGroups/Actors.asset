@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Actors
+  m_EditorClassIdentifier: 
+  m_GroupName: Actors
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d40e1e50bf7c9154b92842f270bd83a4
+  m_SerializeEntries:
+  - m_GUID: 66307c9d73b78b8439c0e84c0c268027
+    m_Address: Villager
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d4ec81cca40626f46a1e231cdfa83d14, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 845fc1e531b50c14d9d343a1bbdb37af, type: 2}
+    - {fileID: 11400000, guid: 4f3b2c135f2d7324dbef0babee8f0099, type: 2}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game.Scripts.Common.Extensions;
 using Game.Scripts.GameplayLogic.AI.Reporting;
 using Game.Scripts.GameplayLogic.Registers;
 using TMPro;
@@ -31,7 +32,6 @@ namespace Game.Scripts.UI.DebugWindow
         public void Init()
         {
             _aiReporter.DecisionDetailsReported += OnDecisionDetailsProduced;
-
             CreateHistoryItems();
         }
 
@@ -50,7 +50,7 @@ namespace Game.Scripts.UI.DebugWindow
         private void OnDecisionDetailsProduced()
         {
             List<ReportDetails> detailsList = _aiReporter
-                .GetReportDetailsForActor(_actorRegistry.GetAllActorIds()[0]);
+                .GetReportDetailsForActor(_actorRegistry.GetAllActorIds().Last());
 
             int index = 0;
             for (int i = detailsList.Count - 1; i >= 0; i--)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Game.Scripts.GameplayLogic.Registers;
+using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI.Reporting
 {
@@ -21,6 +22,8 @@ namespace Game.Scripts.GameplayLogic.AI.Reporting
 
         public void ReportDecisionDetails(string actorId, ActionDetail actionDetails, AIAction action)
         {
+            Debug.Log($"ACTOR {actorId}");
+            
             ReportDetails details = new ReportDetails()
             {
                 ActorName = _actorRegistry.GetActor(actorId).name,

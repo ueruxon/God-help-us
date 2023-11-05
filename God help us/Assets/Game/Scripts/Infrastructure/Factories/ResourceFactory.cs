@@ -1,4 +1,5 @@
 ﻿using System;
+using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.ResourcesData;
 using Game.Scripts.GameplayLogic.ResourceManagement;
 using Game.Scripts.Infrastructure.Services.AssetManagement;
@@ -18,11 +19,17 @@ namespace Game.Scripts.Infrastructure.Factories
             _configProvider = configProvider;
             _assetProvider = assetProvider;
         }
+        
+        public void PreloadAssets()
+        {
+            
+        }
 
-        public ResourceNode CreateResourceNode(ResourceType type, Vector3 at)
+        public async UniTask<ResourceNode> CreateResourceNode(ResourceType type, Vector3 at)
         {
             ResourceNodeConfig data = _configProvider.GetDataForResourceNode(type);
-            ResourceNode node = _assetProvider.Instantiate(data.Prefab, at);
+            GameObject prefab = await _assetProvider.LoadAsync<GameObject>(data.PrefabReference);
+            ResourceNode node = _assetProvider.Instantiate(prefab, at).GetComponent<ResourceNode>();
             
             string id = Guid.NewGuid().ToString();
             node.Construct(id, data);
@@ -31,10 +38,12 @@ namespace Game.Scripts.Infrastructure.Factories
             return node;
         }
 
-        public Resource CreateResource(ResourceType type, Vector3 at)
+        public async UniTask<Resource> CreateResource(ResourceType type, Vector3 at)
         {
             ResourceConfig data = _configProvider.GetDataForResource(type);
-            Resource resource = _assetProvider.Instantiate(data.Prefab, GetRandomPositionOnRadius(at));
+            GameObject prefab = await _assetProvider.LoadAsync<GameObject>(data.PrefabReference);
+            Resource resource = _assetProvider.Instantiate(prefab, GetRandomPositionOnRadius(at))
+                .GetComponent<Resource>();
             
             string id = Guid.NewGuid().ToString();
             resource.Construct(id, data);

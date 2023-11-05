@@ -1,6 +1,5 @@
-﻿using Game.Scripts.Data.Actors;
-using Game.Scripts.Data.Buildings;
-using Game.Scripts.Data.ResourcesData;
+﻿using Cysharp.Threading.Tasks;
+using Game.Scripts.Data.Actors;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.Level;
@@ -14,7 +13,7 @@ using VContainer.Unity;
 
 namespace Game.Scripts.Infrastructure.Setup.EntryPoints
 {
-    public class GameplayFlow : IInitializable, IStartable
+    public class GameplayFlow : IInitializable
     {
         private readonly ActorFactory _actorFactory;
         private readonly ResourceCoordinator _resourceCoordinator;
@@ -41,38 +40,25 @@ namespace Game.Scripts.Infrastructure.Setup.EntryPoints
             _debugWindow = debugWindow;
         }
         
-        public void Initialize()
+        public void Initialize() => 
+            InitGameSystems().Forget();
+
+        private async UniTaskVoid InitGameSystems()
         {
-            _resourceCoordinator.Init();
+            await _resourceCoordinator.Init();
+            await InitTestActors();
             _buildingResolver.Init();
             _debugWindow.Init();
             _levelLoop.Init();
         }
-
-        public void Start()
+        
+        private async UniTask InitTestActors()
         {
-            // for test
             for (int i = 0; i < 2; i++)
             {
-                Actor actor = _actorFactory.CreateActor(ActorType.Villager, new Vector3(0, 0, i + 2));
+                Actor actor = await _actorFactory.CreateActor(ActorType.Villager, new Vector3(0, 0, i + 2));
                 actor.Init();
             }
-
-            // Storage[] storages = Object.FindObjectsOfType<Storage>();
-            //
-            // foreach (Storage storage in storages)
-            // {
-            //     storage.Construct(_configProvider.GetConfigForStorage(ResourceType.Wood));
-            //     _buildingRegistry.RegisterStorage(ResourceType.Wood, storage);
-            // }
-            //
-            // ProductionBuilding[] buildings = Object.FindObjectsOfType<ProductionBuilding>();
-            //
-            // foreach (ProductionBuilding building in buildings)
-            // {
-            //     building.Construct(_configProvider.GetConfigForProductionBuilding(ProductionCategory.Lumber));
-            //     _buildingRegistry.RegisterProductionBuilding(ProductionCategory.Lumber, building);
-            // }
         }
     }
 }

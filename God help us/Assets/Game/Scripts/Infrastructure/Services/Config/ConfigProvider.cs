@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.Actors;
 using Game.Scripts.Data.Buildings;
 using Game.Scripts.Data.ResourcesData;
 using Game.Scripts.Infrastructure.Services.AssetManagement;
+using UnityEngine;
 
 namespace Game.Scripts.Infrastructure.Services.Config
 {
@@ -24,28 +26,32 @@ namespace Game.Scripts.Infrastructure.Services.Config
         {
             _assetProvider = assetProvider;
         }
-        
-        public void Load()
+
+        public async UniTask Init() => 
+            await Load();
+
+        public async UniTask Load()
         {
-            _actorDataByType = _assetProvider
-                .LoadAll<ActorConfig>(AssetPath.ActorsDataPath)
-                .ToDictionary(x => x.Type, x => x);
+            List<ActorConfig> actorConfigs = await _assetProvider.LoadAssetsByLabel<ActorConfig>(AssetLabels.ActorConfig);
+            _actorDataByType = actorConfigs.ToDictionary(x => x.Type, x => x);
 
-            _resourceNodePointsConfig = _assetProvider.Load<ResourceNodePointsConfig>(AssetPath.ResourceNodePointsConfigPath);
-            _resourceNodeDataByType = _assetProvider
-                .LoadAll<ResourceNodeConfig>(AssetPath.ResourceConfigsPath)
-                .ToDictionary(x => x.Type, x => x);
-            _resourceDataByType = _assetProvider
-                .LoadAll<ResourceConfig>(AssetPath.ResourceConfigsPath)
-                .ToDictionary(x => x.Type, x => x);
+            _resourceNodePointsConfig = await _assetProvider.LoadAsync<ResourceNodePointsConfig>(AssetKeys.ResourceNodesOnLevel);
 
-            _storageDataByType = _assetProvider
-                .LoadAll<StorageConfig>(AssetPath.StorageConfigsPath)
-                .ToDictionary(x => x.StoredType, x => x);
+            List<ResourceNodeConfig> nodeConfigs = await _assetProvider.LoadAssetsByLabel<ResourceNodeConfig>(AssetLabels.ResourceNodeConfig);
+            _resourceNodeDataByType = nodeConfigs.ToDictionary(x => x.Type, x => x);
 
-            _productionDataByType = _assetProvider
-                .LoadAll<ProductionBuildingConfig>(AssetPath.ProductionBuildingConfigsPath)
-                .ToDictionary(x => x.Category, x => x);
+            List<ResourceConfig> resourceConfigs =
+                await _assetProvider.LoadAssetsByLabel<ResourceConfig>(AssetLabels.ResourceConfig);
+            _resourceDataByType = resourceConfigs
+                .ToDictionary(x => x.Type, x => x);
+            
+            List<StorageConfig> storageConfigs = 
+                await _assetProvider.LoadAssetsByLabel<StorageConfig>(AssetLabels.BuildingConfig);
+            _storageDataByType = storageConfigs.ToDictionary(x => x.StoredType, x => x);
+
+            List<ProductionBuildingConfig> productionBuildingConfigs =
+                await _assetProvider.LoadAssetsByLabel<ProductionBuildingConfig>(AssetLabels.BuildingConfig);
+            _productionDataByType = productionBuildingConfigs.ToDictionary(x => x.Category, x => x);
         }
 
         public ActorConfig GetDataForActor(ActorType type)

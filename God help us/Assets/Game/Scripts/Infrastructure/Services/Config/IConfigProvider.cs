@@ -1,4 +1,5 @@
-﻿using Game.Scripts.Data.Actors;
+﻿using Cysharp.Threading.Tasks;
+using Game.Scripts.Data.Actors;
 using Game.Scripts.Data.Buildings;
 using Game.Scripts.Data.ResourcesData;
 
@@ -6,7 +7,7 @@ namespace Game.Scripts.Infrastructure.Services.Config
 {
     public interface IConfigProvider
     {
-        public void Load();
+        public UniTask Init();
         public ActorConfig GetDataForActor(ActorType actorType);
         public ResourceNodeConfig GetDataForResourceNode(ResourceType type);
         public ResourceConfig GetDataForResource(ResourceType type);

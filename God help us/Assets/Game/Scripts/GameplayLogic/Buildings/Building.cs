@@ -23,7 +23,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         public string Id => _id;
         private string _id;
-        private BuildingConfig _buildingConfig;
+        private BuildingData _buildingData;
 
         private Dictionary<ResourceType, int> _requiredResourcesForConstruction;
         private Dictionary<ResourceType, int> _registeredResourcesForConstruction;
@@ -31,15 +31,15 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         private BuildingStage _stage;
 
-        public void Construct(string id, BuildingConfig buildingConfig)
+        public void Construct(string id, BuildingData buildingData)
         {
             _id = id;
-            _buildingConfig = buildingConfig;
+            _buildingData = buildingData;
             _requiredResourcesForConstruction = new Dictionary<ResourceType, int>();
             _registeredResourcesForConstruction = new Dictionary<ResourceType, int>();
             _registeredResources = new List<Resource>();
 
-            foreach (ConstructionData data in buildingConfig.RequiredResources)
+            foreach (ConstructionData data in buildingData.RequiredResources)
             {
                 _requiredResourcesForConstruction[data.Type] = data.ResourceAmount;
                 _registeredResourcesForConstruction[data.Type] = 0;
@@ -58,7 +58,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
             transform.position;
 
         public BuildingCategory GetCategory() => 
-            _buildingConfig.Category;
+            _buildingData.Category;
 
         public bool IsReleased() => 
             _stage == BuildingStage.Released;
@@ -109,7 +109,7 @@ namespace Game.Scripts.GameplayLogic.Buildings
 
         private bool CheckRemainingResource()
         {
-            return _buildingConfig.RequiredResources.Any() && _buildingConfig.RequiredResources.All(x =>
+            return _buildingData.RequiredResources.Any() && _buildingData.RequiredResources.All(x =>
             {
                 int currentCount = _requiredResourcesForConstruction[x.Type];
                 return currentCount <= 0;

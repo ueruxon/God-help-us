@@ -1,40 +1,43 @@
-﻿using Game.Scripts.Infrastructure.Services.Config;
+﻿using Cysharp.Threading.Tasks;
+using Game.Scripts.Infrastructure.Services.AssetManagement;
+using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace Game.Scripts.Infrastructure.Setup.EntryPoints
 {
-    public class BootstrapFlow : IInitializable, IStartable
+    public class BootstrapFlow : IInitializable
     {
         private const string GameSceneName = "GameScene";
         
         private readonly SceneLoader _sceneLoader;
+        private readonly IAssetProvider _assetProvider;
         private readonly IConfigProvider _configProvider;
 
-        public BootstrapFlow(SceneLoader sceneLoader, IConfigProvider configProvider)
+        public BootstrapFlow(SceneLoader sceneLoader, IAssetProvider assetProvider, IConfigProvider configProvider)
         {
             _sceneLoader = sceneLoader;
+            _assetProvider = assetProvider;
             _configProvider = configProvider;
         }
 
         public void Initialize()
         {
-            InitializeSystems();
+            InitializeSystems().Forget();
         }
 
-        private void InitializeSystems()
+        private async UniTaskVoid InitializeSystems()
         {
-            _configProvider.Load();
+            await _assetProvider.Init();
+            await _configProvider.Init();
+            
+            await LoadNextScene();
         }
 
-        public void Start() => 
-            LoadNextScene();
+        // public void Start() => 
+        //     LoadNextScene().Forget();
 
-        private void LoadNextScene()
-        {
-#pragma warning disable 4014
-            _sceneLoader.Load(GameSceneName);
-#pragma warning disable 4014
-        }
+        private async UniTask LoadNextScene() => 
+            await _sceneLoader.Load(GameSceneName);
     }
 }

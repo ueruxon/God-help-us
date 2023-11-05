@@ -11,6 +11,6 @@ namespace Game.Scripts.Data.Buildings
         public Transform FillerPrefab;
         public ResourceType StoredType;
         
-        public BuildingConfig BuildingConfig;
+        public BuildingData BuildingData;
     }
 }
