@@ -7,7 +7,7 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
         private readonly Func<AIContext, bool> _appliesTo;
         private readonly Func<AIContext, float> _getInput;
         private readonly Func<float, AIContext, float> _evaluateScore;
-        private readonly ActionType _actionType;
+        private readonly Type _actionType;
 
         public string Name { get; set; }
 
@@ -15,7 +15,7 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
             Func<AIContext, bool> appliesTo,
             Func<AIContext, float>  getInput,
             Func<float, AIContext, float> evaluateScore,
-            ActionType actionType,
+            Type actionType,
             string name)
         {
             Name = name;
@@ -31,7 +31,7 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 
         public float EvaluateScore(float input, AIContext context) => _evaluateScore(input, context);
         
-        public ActionType GetActionType() => 
+        public Type GetActionType() => 
             _actionType;
     }
 }

@@ -22,8 +22,6 @@ namespace Game.Scripts.GameplayLogic.AI.Reporting
 
         public void ReportDecisionDetails(string actorId, ActionDetail actionDetails, AIAction action)
         {
-            Debug.Log($"ACTOR {actorId}");
-            
             ReportDetails details = new ReportDetails()
             {
                 ActorName = _actorRegistry.GetActor(actorId).name,

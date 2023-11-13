@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Game.Scripts.GameplayLogic.Actors;
+using Game.Scripts.GameplayLogic.AI.Actions;
 using Game.Scripts.GameplayLogic.AI.UtilityAI.Calculations;
 using Game.Scripts.GameplayLogic.Registers;
+using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 {
@@ -28,8 +30,16 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
         {
             IEnumerable<IUtilityFunction> convolutions = _convolutions
                 .Where(utilityFunction =>
-                    data.Actions.Any(aiAction => utilityFunction.GetActionType() == aiAction.Type));
+                    data.Actions.Any(aiAction =>
+                    {
+                        Debug.Log($"" +
+                                  $"utility {utilityFunction.GetActionType()}, " +
+                                  $"aiAction {aiAction.GetType()}" +
+                                  $"bool {utilityFunction.GetActionType() == aiAction.GetType()}");
+                        return utilityFunction.GetActionType() == aiAction.GetType();
+                    }));
 
+            Debug.Log("а че так");
             return convolutions;
         }
 
@@ -37,13 +47,13 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
         {
             _convolutions = new Convolutions()
             {
-                {When.IsDontMove, GetInput.IsTrue, ScoreCalculator.AsIs, ActionType.Idle, "Idle"},
-                {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Mining, "Mining"},
-                {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), ActionType.Collect, "Collect Item"},
-                {When.HasConstructJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), ActionType.Collect, "Construct"},
-                {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+50), ActionType.Delivery, "Delivery"},
-                {When.AnyAvailableJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+10), ActionType.JobRequested, "Job Requested"},
-                {When.IsWorkerFreelancer, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), ActionType.Freelance, "Freelance"},
+                {When.IsDontMove, GetInput.IsTrue, ScoreCalculator.AsIs, typeof(IdleAction), "Idle"},
+                {When.HasMiningJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), typeof(MiningAction), "Mining"},
+                {When.HasCollectJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+30), typeof(CollectAction), "Collect Item"},
+                {When.HasConstructJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+40), typeof(CollectAction), "Construct"},
+                {When.HasResourceInInventory, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+50), typeof(DeliveryAction), "Delivery"},
+                {When.AnyAvailableJob, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+10), typeof(JobRequestAction), "Job Requested"},
+                {When.IsWorkerFreelancer, GetInput.IsTrue, ScoreCalculator.IncreaseBy(+20), typeof(FreelanceAction), "Freelance"},
             };
         }
     }
@@ -54,7 +64,7 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
             Func<AIContext, bool> appliesTo,
             Func<AIContext, float> getInput,
             Func<float, AIContext, float> evaluateScore,
-            ActionType actionType,
+            Type actionType,
             string name)
         {
             Add(new UtilityFunction(appliesTo, getInput, evaluateScore, actionType, name));

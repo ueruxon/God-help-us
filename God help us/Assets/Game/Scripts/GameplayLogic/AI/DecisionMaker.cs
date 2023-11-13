@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Game.Scripts.Common.Extensions;
 using Game.Scripts.GameplayLogic.Actors;
@@ -14,10 +15,10 @@ namespace Game.Scripts.GameplayLogic.AI
         private readonly ActorData _actorData;
         private readonly AIReporter _aiReporter;
 
-        private readonly Dictionary<ActionType, AIAction> _actionsByType;
+        private readonly Dictionary<Type, AIAction> _actionsByType;
         private readonly IEnumerable<IUtilityFunction> _utilityFunctions;
 
-        private ActionType _prevActionType;
+        private Type _prevActionType;
         
         public DecisionMaker(AIContext context, AIBrains brains, ActorData data, AIReporter aiReporter)
         {
@@ -26,8 +27,8 @@ namespace Game.Scripts.GameplayLogic.AI
             _actorData = data;
             _aiReporter = aiReporter;
 
-            _actionsByType = _actorData.Actions.ToDictionary(x => x.Type, x => x);
-            _actionsByType.TryAdd(_actorData.DefaultAction.Type, _actorData.DefaultAction);
+            _actionsByType = _actorData.Actions.ToDictionary(x => x.GetType(), x => x);
+            _actionsByType.TryAdd(_actorData.DefaultAction.GetType(), _actorData.DefaultAction);
             _utilityFunctions = _brains.GetConvolutions(_actorData);
         }
 
@@ -69,9 +70,9 @@ namespace Game.Scripts.GameplayLogic.AI
     {
         public string Name { get; }
         public float Score { get; }
-        public ActionType ActionType { get; }
+        public Type ActionType { get; }
 
-        public ActionDetail(ActionType actionType, string name, float score)
+        public ActionDetail(Type actionType, string name, float score)
         {
             Name = name;
             Score = score;

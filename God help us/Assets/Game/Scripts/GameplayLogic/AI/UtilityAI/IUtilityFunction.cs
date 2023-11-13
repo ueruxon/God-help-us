@@ -1,4 +1,6 @@
-﻿namespace Game.Scripts.GameplayLogic.AI.UtilityAI
+﻿using System;
+
+namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 {
     public interface IUtilityFunction
     {
@@ -8,6 +10,6 @@
         float GetInput(AIContext context);
         float EvaluateScore(float input, AIContext context);
 
-        ActionType GetActionType();
+        Type GetActionType();
     }
 }
