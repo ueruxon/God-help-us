@@ -1,1 +1,1 @@
-# Pet Project Game
+# Pet Project for learning
