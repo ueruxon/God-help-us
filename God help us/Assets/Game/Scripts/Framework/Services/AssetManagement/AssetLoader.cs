@@ -8,7 +8,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceLocations;
 using Object = UnityEngine.Object;
 
-namespace Game.Scripts.Infrastructure.Services.AssetManagement
+namespace Game.Scripts.Framework.Services.AssetManagement
 {
     public class AssetLoader : IDisposable
     {

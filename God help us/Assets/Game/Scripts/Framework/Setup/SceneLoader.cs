@@ -1,13 +1,12 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using Game.Scripts.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.ResourceManagement.ResourceProviders;
+using UnityEngine.SceneManagement;
 
-namespace Game.Scripts.Infrastructure.Setup
+namespace Game.Scripts.Framework.Setup
 {
     public class SceneLoader
     {

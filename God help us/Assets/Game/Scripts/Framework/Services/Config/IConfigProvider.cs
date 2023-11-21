@@ -3,7 +3,7 @@ using Game.Scripts.Data.Actors;
 using Game.Scripts.Data.Buildings;
 using Game.Scripts.Data.ResourcesData;
 
-namespace Game.Scripts.Infrastructure.Services.Config
+namespace Game.Scripts.Framework.Services.Config
 {
     public interface IConfigProvider
     {

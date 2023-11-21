@@ -1,26 +1,26 @@
-﻿using Game.Scripts.GameplayLogic.AI.Reporting;
+﻿using Game.Scripts.Factories;
+using Game.Scripts.GameplayLogic.AI.Reporting;
 using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.JobManagement;
 using Game.Scripts.GameplayLogic.Level;
 using Game.Scripts.GameplayLogic.Registers;
 using Game.Scripts.GameplayLogic.ResourceManagement;
-using Game.Scripts.Infrastructure.Factories;
-using Game.Scripts.Infrastructure.Setup.EntryPoints;
+using Game.Scripts.UI;
 using Game.Scripts.UI.DebugWindow;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Game.Scripts.Infrastructure.Setup.Scopes
+namespace Game.Scripts.Framework.Setup.Gameplay
 {
-    public class LevelScope : LifetimeScope
+    public class GameplayScope : LifetimeScope
     {
-        [SerializeField] private Transform _uiRoot;
+        [SerializeField] private UIRoot _uiRoot;
         [SerializeField] private AIDebugWindow _debugWindow;
         
         protected override void Configure(IContainerBuilder builder)
         {
-            Debug.Log("Configure from levelScope");
+            Debug.Log("Configure from GameplayScope");
             
             builder.Register<JobController>(Lifetime.Scoped);
             builder.Register<JobFactory>(Lifetime.Scoped);
@@ -38,8 +38,9 @@ namespace Game.Scripts.Infrastructure.Setup.Scopes
             builder.Register<ActorFactory>(Lifetime.Scoped);
             
             builder.Register<ITickable, LevelLoop>(Lifetime.Scoped).AsSelf();
-            
-            builder.RegisterComponentInNewPrefab(_debugWindow, Lifetime.Scoped).UnderTransform(_uiRoot);
+
+            builder.RegisterComponent(_uiRoot);
+            builder.RegisterComponentInNewPrefab(_debugWindow, Lifetime.Scoped).UnderTransform(_uiRoot.transform);
 
             builder.RegisterEntryPoint<GameplayFlow>();
         }

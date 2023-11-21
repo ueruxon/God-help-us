@@ -1,7 +1,7 @@
 ﻿using System;
 using Game.Scripts.Data.Buildings;
 using Game.Scripts.Data.ResourcesData;
-using Game.Scripts.Infrastructure.Factories;
+using Game.Scripts.Factories;
 using UnityEngine;
 
 namespace Game.Scripts.GameplayLogic.Buildings

@@ -4,10 +4,10 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Common.Extensions;
 using Game.Scripts.Data.ResourcesData;
+using Game.Scripts.Factories;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.JobManagement;
-using Game.Scripts.Infrastructure.Factories;
-using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
 using VContainer.Unity;
 

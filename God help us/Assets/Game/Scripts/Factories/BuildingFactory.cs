@@ -1,13 +1,13 @@
 ﻿using System;
 using Game.Scripts.Data.Buildings;
 using Game.Scripts.Data.ResourcesData;
+using Game.Scripts.Framework.Services.AssetManagement;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.Registers;
-using Game.Scripts.Infrastructure.Services.AssetManagement;
-using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
 
-namespace Game.Scripts.Infrastructure.Factories
+namespace Game.Scripts.Factories
 {
     public class BuildingFactory
     {

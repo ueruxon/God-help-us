@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.Actors;
+using Game.Scripts.Framework.Services.AssetManagement;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.AI;
 using Game.Scripts.GameplayLogic.AI.Reporting;
 using Game.Scripts.GameplayLogic.AI.UtilityAI;
 using Game.Scripts.GameplayLogic.JobManagement;
 using Game.Scripts.GameplayLogic.Registers;
-using Game.Scripts.Infrastructure.Services.AssetManagement;
-using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Game.Scripts.Infrastructure.Factories
+namespace Game.Scripts.Factories
 {
     public class ActorFactory
     {

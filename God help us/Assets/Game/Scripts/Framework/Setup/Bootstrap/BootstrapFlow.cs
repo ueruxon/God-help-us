@@ -1,10 +1,9 @@
 ﻿using Cysharp.Threading.Tasks;
-using Game.Scripts.Infrastructure.Services.AssetManagement;
-using Game.Scripts.Infrastructure.Services.Config;
-using UnityEngine;
+using Game.Scripts.Framework.Services.AssetManagement;
+using Game.Scripts.Framework.Services.Config;
 using VContainer.Unity;
 
-namespace Game.Scripts.Infrastructure.Setup.EntryPoints
+namespace Game.Scripts.Framework.Setup.Bootstrap
 {
     public class BootstrapFlow : IInitializable
     {

@@ -1,12 +1,11 @@
-using Game.Scripts.Infrastructure.Services.AssetManagement;
-using Game.Scripts.Infrastructure.Services.Config;
-using Game.Scripts.Infrastructure.Setup.EntryPoints;
+using Game.Scripts.Framework.Services.AssetManagement;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.UI;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Game.Scripts.Infrastructure.Setup.Scopes
+namespace Game.Scripts.Framework.Setup.Bootstrap
 {
     public class BootstrapScope : LifetimeScope
     {

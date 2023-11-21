@@ -1,4 +1,4 @@
-﻿namespace Game.Scripts.Infrastructure.Services.AssetManagement
+﻿namespace Game.Scripts.Framework.Services.AssetManagement
 {
     public static class AssetKeys
     {

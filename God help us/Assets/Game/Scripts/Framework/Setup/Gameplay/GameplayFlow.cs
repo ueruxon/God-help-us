@@ -1,17 +1,17 @@
 ﻿using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.Actors;
+using Game.Scripts.Factories;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.GameplayLogic.Actors;
 using Game.Scripts.GameplayLogic.Buildings;
 using Game.Scripts.GameplayLogic.Level;
 using Game.Scripts.GameplayLogic.Registers;
 using Game.Scripts.GameplayLogic.ResourceManagement;
-using Game.Scripts.Infrastructure.Factories;
-using Game.Scripts.Infrastructure.Services.Config;
 using Game.Scripts.UI.DebugWindow;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Game.Scripts.Infrastructure.Setup.EntryPoints
+namespace Game.Scripts.Framework.Setup.Gameplay
 {
     public class GameplayFlow : IInitializable
     {
@@ -47,6 +47,7 @@ namespace Game.Scripts.Infrastructure.Setup.EntryPoints
         {
             await _resourceCoordinator.Init();
             await InitTestActors();
+            
             _buildingResolver.Init();
             _debugWindow.Init();
             _levelLoop.Init();

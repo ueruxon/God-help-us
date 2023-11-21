@@ -15,8 +15,7 @@ namespace Game.Scripts.GameplayLogic.AI
         }
         
         [SerializeField] public string ActionName;
-
-        public ActionType Type;
+        
         private ActionStatus _status;
 
         public virtual void OnEnter(AIContext context) => 

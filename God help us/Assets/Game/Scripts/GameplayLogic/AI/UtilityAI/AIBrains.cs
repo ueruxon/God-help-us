@@ -28,19 +28,28 @@ namespace Game.Scripts.GameplayLogic.AI.UtilityAI
 
         public IEnumerable<IUtilityFunction> GetConvolutions(ActorData data)
         {
-            IEnumerable<IUtilityFunction> convolutions = _convolutions
-                .Where(utilityFunction =>
-                    data.Actions.Any(aiAction =>
-                    {
-                        Debug.Log($"" +
-                                  $"utility {utilityFunction.GetActionType()}, " +
-                                  $"aiAction {aiAction.GetType()}" +
-                                  $"bool {utilityFunction.GetActionType() == aiAction.GetType()}");
-                        return utilityFunction.GetActionType() == aiAction.GetType();
-                    }));
+            // IEnumerable<IUtilityFunction> convolutions = _convolutions
+            //     .Where(utilityFunction =>
+            //         data.Actions.Any(aiAction =>
+            //         {
+            //             Debug.Log($"" +
+            //                       $"utility {utilityFunction.GetActionType()}, " +
+            //                       $"aiAction {aiAction.GetType()}" +
+            //                       $"bool {utilityFunction.GetActionType() == aiAction.GetType()}");
+            //             return utilityFunction.GetActionType() == aiAction.GetType();
+            //         }));
 
-            Debug.Log("а че так");
-            return convolutions;
+            Convolutions filteredConvolutions = new Convolutions();
+            foreach (UtilityFunction utilityFunction in _convolutions)
+            {
+                foreach (AIAction aiAction in data.Actions)
+                {
+                    if (utilityFunction.GetActionType() == aiAction.GetType()) 
+                        filteredConvolutions.Add(utilityFunction);
+                }
+            }
+            
+            return filteredConvolutions;
         }
 
         private void CreateRules()

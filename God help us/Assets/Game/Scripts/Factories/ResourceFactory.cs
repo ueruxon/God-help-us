@@ -1,13 +1,13 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 using Game.Scripts.Data.ResourcesData;
+using Game.Scripts.Framework.Services.AssetManagement;
+using Game.Scripts.Framework.Services.Config;
 using Game.Scripts.GameplayLogic.ResourceManagement;
-using Game.Scripts.Infrastructure.Services.AssetManagement;
-using Game.Scripts.Infrastructure.Services.Config;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Game.Scripts.Infrastructure.Factories
+namespace Game.Scripts.Factories
 {
     public class ResourceFactory
     {
